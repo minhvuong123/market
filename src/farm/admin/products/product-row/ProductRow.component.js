@@ -9,7 +9,6 @@ function ProductRowComponent({ product }) {
   const [productCom, setProductCom] = useState();
 
   useEffect(() => {
-
     setProductCom(product);
     return () => {
 
@@ -50,7 +49,7 @@ function ProductRowComponent({ product }) {
         <td>{productCom && productCom.product_title}</td>
         <td>
           <div style={{ maxWidth: 100 }}>
-            <img src={`http://localhost:4000/${productCom && productCom.product_images_link}`} alt="" />
+            <img src={`http://localhost:4000/${productCom && productCom.product_images_link[0].url}`} alt="" />
           </div>
         </td>
         <td>{productCom && productCom.product_price}</td>
@@ -104,14 +103,14 @@ function ProductRowComponent({ product }) {
               <Input.TextArea />
             </Form.Item>
           </Form.Item>
-          {/* <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
+          <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
             <Form.Item label="Images Link" name="product_images_link" >
-              <UploadComponent images={[productCom && productCom.product_images_link]} limit={1} />
+              <UploadComponent images={productCom && productCom.product_images_link} limit={1} product_id={product._id} />
             </Form.Item>
             <Form.Item label="Images List" name="product_images_list" >
-              <UploadComponent images={image} />
+              <UploadComponent images={productCom && productCom.product_images_list} product_id={product._id} />
             </Form.Item>
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
             <Form.Item label="Type" name="product_type" >
               <Input />
