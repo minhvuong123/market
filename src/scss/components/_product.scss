@@ -1,0 +1,14 @@
+.form-control-layout{
+  .ant-form-item-control{
+    .ant-form-item-control-input{
+      .ant-form-item-control-input-content{
+        display: flex;
+        justify-content: space-around;
+        .ant-form-item{
+          display: inline-block;
+          width: 48%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.orders-table{
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  th, td {
+    padding: 8px;
+  }
+  tbody {
+    tr:nth-child(2n-1) {
+      background-color: #f2f2f2;
+    };
+  }
+  thead {
+    tr {
+      background-color: #fff;
+    }
+  }
+}

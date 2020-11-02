@@ -1,0 +1,18 @@
+@import './variables/variables.scss'; 
+
+// common
+@import './common/layout.scss';
+
+// components
+@import './components/orders.scss';
+@import './components/admin.scss';
+@import './components/header.scss';
+@import './components/product.scss';
+
+.ant-rate-star-second{
+  font-size: 10px !important;
+}
+
+.short{
+  margin: 0;
+}

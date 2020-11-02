@@ -1,0 +1,31 @@
+.site-layout-sub-header-background {
+  background: #fff;
+}
+
+.site-layout-background {
+  background: #fff;
+}
+
+.editable-row .ant-form-item-explain {
+  position: absolute;
+  top: 100%;
+  font-size: 12px;
+}
+
+.admin-header{
+  padding: 0;
+  display: flex;
+  align-items: center;
+  .admin-title{
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.ant-pagination{
+  .ant-pagination-item-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
