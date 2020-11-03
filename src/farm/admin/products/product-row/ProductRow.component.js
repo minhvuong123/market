@@ -28,11 +28,11 @@ function ProductRowComponent({ product }) {
 
   };
 
-  function update (data){
-    const mergeProduct = Object.assign(productCom, {...data, product_price: +data.product_price, product_amount: +data.product_amount, product_discount: +data.product_discount});
- 
+  function update(data) {
+    const mergeProduct = Object.assign(productCom, { ...data, product_price: +data.product_price, product_amount: +data.product_amount, product_discount: +data.product_discount });
+
     api.patch('/products', { product: mergeProduct }).then(result => {
-      if(result.data.status === 'ok') {
+      if (result.data.status === 'ok') {
         setVisible(false);
       }
     })
@@ -68,6 +68,7 @@ function ProductRowComponent({ product }) {
       >
         <Form
           name="product-form"
+          layout='vertical'
           initialValues={{
             product_title: productCom && productCom.product_title,
             product_price: productCom && productCom.product_price,
@@ -80,7 +81,7 @@ function ProductRowComponent({ product }) {
             product_type: productCom && productCom.product_type,
             product_origin: productCom && productCom.product_origin,
             product_supplier: productCom && productCom.product_supplier,
-            product_category:productCom && productCom.product_category,
+            product_category: productCom && productCom.product_category,
             product_discount: productCom && productCom.product_discount,
             created_at: productCom && productCom.created_at
           }}
@@ -99,8 +100,8 @@ function ProductRowComponent({ product }) {
             <Form.Item label="Amount" name="product_amount" rules={[{ required: true, message: 'Product amount not valid!' }]}  >
               <Input />
             </Form.Item>
-            <Form.Item label="Description" name="product_des" rules={[{ required: true, message: 'Product description not valid!' }]}  >
-              <Input.TextArea />
+            <Form.Item label="Discount" name="product_discount" rules={[{ required: true, message: 'Product discount not valid!' }]}  >
+              <Input />
             </Form.Item>
           </Form.Item>
           <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
@@ -119,13 +120,12 @@ function ProductRowComponent({ product }) {
               <Input />
             </Form.Item>
           </Form.Item>
-          <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
-            <Form.Item label="Supplier" name="product_supplier" rules={[{ required: true, message: 'Product supplier not valid!' }]}  >
-              <Input />
-            </Form.Item>
-            <Form.Item label="Discount" name="product_discount" rules={[{ required: true, message: 'Product discount not valid!' }]}  >
-              <Input />
-            </Form.Item>
+          <Form.Item label="Supplier" name="product_supplier" rules={[{ required: true, message: 'Product supplier not valid!' }]}  >
+            <Input />
+          </Form.Item>
+
+          <Form.Item label="Description" name="product_des" rules={[{ required: true, message: 'Product description not valid!' }]}  >
+            <Input.TextArea />
           </Form.Item>
           <Form.Item label="Created_at" rules={[{ required: true, message: 'Product Created_at not valid!' }]} >
             created_at

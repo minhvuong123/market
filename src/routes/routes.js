@@ -13,7 +13,7 @@ const RouteWithSubRoutes = (route) => {
       path={route.path}
       exact={route.exact}
       render={props => {
-        return <route.component {...props} routes={route.routes} />
+        return <route.component {...props} keyPath={route.keyPath} routes={route.routes} />
       }} 
     />
   );
@@ -24,7 +24,8 @@ export const RenderRoutes = ({ routes }) => {
     <Switch>
       {
         routes.map((route, i) => {
-          return <RouteWithSubRoutes key={route.key} {...route} />
+
+          return <RouteWithSubRoutes key={route.keyPath} {...route} />
         })
       }
       <Route component={() => <h1>Not Found!</h1>} />
@@ -35,65 +36,65 @@ export const RenderRoutes = ({ routes }) => {
 const Routes = [
   {
     path: '/',
-    key: 'root',
+    keyPath: 'root',
     exact: true,
     component: HomeComponent
   },
   {
     path: '/admin',
-    key: 'admin',
+    keyPath: 'admin',
     exact: true,
     component: AdminComponent
   },
   {
     path: '/admin/users',
-    key: 'admin',
+    keyPath: 'users',
     exact: true,
     component: AdminComponent
   },
   {
     path: '/admin/products',
-    key: 'admin',
+    keyPath: 'products',
     exact: true,
     component: AdminComponent
   },
   {
     path: '/admin/categories',
-    key: 'admin',
+    keyPath: 'categories',
     exact: true,
     component: AdminComponent
   },
   {
     path: '/admin/orders',
-    key: 'admin',
+    keyPath: 'orders',
     exact: true,
     component: AdminComponent
   },
   {
     path: '/admin/transaction',
-    key: 'admin',
+    keyPath: 'transaction',
     exact: true,
     component: AdminComponent
   },
   {
     path: "/app",
-    key: "APP",
+    keyPath: "APP",
     component: RenderRoutes,
     routes: [
       {
         path: "/app",
-        key: "APP_ROOT",
+        keyPath: "APP_ROOT",
         exact: true,
         component: () => <h1>App Index</h1>,
       },
       {
         path: "/app/page",
-        key: "APP_PAGE",
+        keyPath: "APP_PAGE",
         component: RenderRoutes,
         routes: [
           {
             path: "/app/page/page",
-            key: "APP_PAGE_PAGE",
+            keyPath: "APP_PAGE_PAGE",
             exact: true,
             component: () => <h1>App Page Page</h1>
           }
@@ -101,7 +102,7 @@ const Routes = [
       },
       {
         path: "/app/sub",
-        key: "APP_SUB",
+        keyPath: "APP_SUB",
         exact: true,
         component: () => <h1>App SUB</h1>,
       },

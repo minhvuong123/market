@@ -12,11 +12,13 @@ import { NavLink } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import UserComponent from './users/Users.component';
 import ProductsComponent from './products/Products.component';
+import CategoriesComponent from './categories/Categories.component';
+import OrdersComponent from './orders/Orders.component';
 
 const { Header, Sider, Content } = Layout;
 
 
-function AdminComponent({location }) {
+function AdminComponent({ location, keyPath }) {
   const [collapsed, setCollapsed] = useState(false);
   const [pathRoute, setPathRoute] = useState('');
 
@@ -42,9 +44,9 @@ function AdminComponent({location }) {
       case subPages[1]:
         return <ProductsComponent />
       case subPages[2]:
-        return <div>categories page</div>
+        return <CategoriesComponent />
       case subPages[3]:
-        return <div>orders page</div>
+        return <OrdersComponent />
       case subPages[4]:
         return <div>transaction page</div>
       default:
@@ -62,12 +64,12 @@ function AdminComponent({location }) {
     <Layout className="admin-page">
       <Sider className="site-layout-background" trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
-        <Menu theme="light" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<UserOutlined />}><NavLink to="/admin/users">Users</NavLink></Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}><NavLink to="/admin/products">Products</NavLink></Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}><NavLink to="/admin/categories">Categories</NavLink></Menu.Item>
-          <Menu.Item key="4" icon={<UploadOutlined />}><NavLink to="/admin/orders">Orders</NavLink></Menu.Item>
-          <Menu.Item key="5" icon={<UploadOutlined />}><NavLink to="/admin/transaction">Transaction</NavLink></Menu.Item>
+        <Menu theme="light" mode="inline" defaultSelectedKeys={[keyPath]}>
+          <Menu.Item key="users" icon={<UserOutlined />}><NavLink to="/admin/users">Users</NavLink></Menu.Item>
+          <Menu.Item key="products" icon={<VideoCameraOutlined />}><NavLink to="/admin/products">Products</NavLink></Menu.Item>
+          <Menu.Item key="categories" icon={<UploadOutlined />}><NavLink to="/admin/categories">Categories</NavLink></Menu.Item>
+          <Menu.Item key="orders" icon={<UploadOutlined />}><NavLink to="/admin/orders">Orders</NavLink></Menu.Item>
+          <Menu.Item key="transaction" icon={<UploadOutlined />}><NavLink to="/admin/transaction">Transaction</NavLink></Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout">
