@@ -1,11 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import CatalogComponent from 'shopee/components/catalog/Catalog.component';
-import ProductDetailComponent from 'shopee/components/products/detail/ProductDetail.component';
-import OrdersComponent from 'shopee/components/products/orders/Orders.component';
 
 import AdminComponent from 'farm/admin/Admin.component';
 import HomeComponent from 'farm/components/home/Home.component';
+import ProductDetailComponent from 'farm/components/product-detail/ProductDetail.component';
+import CardsComponent from 'farm/components/cards/Cards.component';
+import BlogComponent from 'farm/components/blog/Blog.component';
+import ContactComponent from 'farm/components/contact/Contact.component';
+import AboutComponent from 'farm/components/about/About.component';
 
 const RouteWithSubRoutes = (route) => {
   return (
@@ -39,6 +41,36 @@ const Routes = [
     keyPath: 'root',
     exact: true,
     component: HomeComponent
+  },
+  {
+    path: '/product/:productID',
+    keyPath: 'detail',
+    exact: true,
+    component: ProductDetailComponent
+  },
+  {
+    path: '/cards',
+    keyPath: 'cards',
+    exact: true,
+    component: CardsComponent
+  },
+  {
+    path: '/blog',
+    keyPath: 'blog',
+    exact: true,
+    component: BlogComponent
+  },
+  {
+    path: '/contact',
+    keyPath: 'contact',
+    exact: true,
+    component: ContactComponent
+  },
+  {
+    path: '/about',
+    keyPath: 'about',
+    exact: true,
+    component: AboutComponent
   },
   {
     path: '/admin',

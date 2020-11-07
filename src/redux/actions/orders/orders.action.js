@@ -1,5 +1,6 @@
 export const SAVE_ORDER = 'SAVE_ORDER';
 export const GET_ORDERS = 'GET_ORDERS';
+export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const UPDATE_ORDERS = 'UPDATE_ORDERS';
 
 export function saveOrder(order) {
@@ -9,10 +10,17 @@ export function saveOrder(order) {
   }
 }
 
-export function getOrder(orders) {
+export function getOrders(orders) {
   return {
     type: GET_ORDERS,
     orders
+  }
+}
+
+export function updateOrder(order){
+  return {
+    type: UPDATE_ORDER,
+    order
   }
 }
 

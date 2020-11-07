@@ -8,7 +8,7 @@ import {
   product: {}
  }
  
- const categoriesReducer = (state = initState, action) => {
+ const productsReducer = (state = initState, action) => {
    switch(action.type) {
      case GET_PRODUCTS:
        return {...state, products : action.products}
@@ -19,4 +19,4 @@ import {
    }
  }
  
- export default categoriesReducer;
+ export default productsReducer;

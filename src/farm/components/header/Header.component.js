@@ -51,12 +51,12 @@ function HeaderComponent() {
                   <a className="dropdown-item" href="/">Checkout</a>
                 </div>
               </li>
-              <li className="nav-item"><a href="/" className="nav-link">About</a></li>
-              <li className="nav-item"><a href="/" className="nav-link">Blog</a></li>
-              <li className="nav-item"><a href="/" className="nav-link">Contact</a></li>
+              <li className="nav-item"><NavLink to="/about" className="nav-link">About</NavLink></li>
+              <li className="nav-item"><NavLink to="/blog" className="nav-link">Blog</NavLink></li>
+              <li className="nav-item"><NavLink to="/contact" className="nav-link">Contact</NavLink></li>
               <li className="nav-item"><NavLink to="/admin" className="nav-link">Admin</NavLink></li>
-              <li className="nav-item cta cta-colored"><a href="cart.html" className="nav-link"><span
-                className="icon-shopping_cart"></span>[0]</a></li>
+              <li className="nav-item cta cta-colored"><NavLink to={`/cards`} className="nav-link"><span
+                className="icon-shopping_cart"></span>[0]</NavLink></li>
 
             </ul>
           </div>

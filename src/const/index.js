@@ -2,20 +2,28 @@ export const api_url = 'http://localhost:4000';
 
 export const supplier = [
     {
-        supplier_key: "mm",
-        supplier_value: "Momo"
+        supplier_key: "vs",
+        supplier_value: "Vissan"
     },
     {
-        supplier_key: "us",
-        supplier_value: "United State"
-    },
-    {
-        supplier_key: "ff",
-        supplier_value: "Flower Farm"
+        supplier_key: "vh",
+        supplier_value: "Vĩnh Hoàn"
     },
     {
         supplier_key: "gf",
-        supplier_value: "Green Farm"
+        supplier_value: "GreenFeed"
+    },
+    {
+        supplier_key: "bh",
+        supplier_value: "Ba Huân"
+    },
+    {
+        supplier_key: "nv",
+        supplier_value: "Nam Việt"
+    },
+    {
+        supplier_key: "vn",
+        supplier_value: "Vineco"
     },
 ]
 

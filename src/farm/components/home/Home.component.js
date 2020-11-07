@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProductComponent from 'farm/components/product/Product.component';
+import api from 'api';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getProducts, getCategories } from 'redux/actions';
 
-function HomeComponent() {
+function HomeComponent({ products, getProductsAction, categories, getCategoriesAction }) {
+  useEffect(() => {
+    Promise.all([api.get('/products'), api.get('/categories')]).then(results => {
+      getProductsAction(results[0].data.products)
+      getCategoriesAction(results[1].data.categories)
+    })
+    return () => {
+
+    }
+  }, [getProductsAction, getCategoriesAction])
+
+  function loadDataCategory(e, id) {
+    e.preventDefault();
+
+    api.post(`/products/category`, { id }).then(result => {
+      getProductsAction(result.data.products)
+    })
+  }
   return (
     <React.Fragment>
       <div className="hero-wrap hero-bread" style={{ backgroundImage: 'url(images/bg_1.jpg)' }}>
@@ -20,17 +41,34 @@ function HomeComponent() {
           <div className="row justify-content-center">
             <div className="col-md-10 mb-5 text-center">
               <ul className="product-category">
-                <li><a href="/" className="active">All</a></li>
-                <li><a href="/">Vegetables</a></li>
-                <li><a href="/">Fruits</a></li>
-                <li><a href="/">Juice</a></li>
-                <li><a href="/">Dried</a></li>
+                <li><a onClick={(event) => loadDataCategory(event, 'all')} href="/" className="active">All</a></li>
+                {
+                  categories 
+                  && categories.length
+                  && categories.map(category => {
+                    return  <React.Fragment key={category._id}>
+                              <li><a onClick={(event) => loadDataCategory(event, category._id)} href="/">{category.category_title}</a></li>
+                            </React.Fragment>
+                  })
+                }
               </ul>
             </div>
           </div>
 
           <div className="row">
-            <div className="col-md-6 col-lg-3">
+            {
+              products
+                && products.length
+                ? products.map(product => {
+                  return <React.Fragment key={product._id}>
+                    <div className="col-md-6 col-lg-3">
+                      <ProductComponent product={product} />
+                    </div>
+                  </React.Fragment>
+                })
+                : <div className="text-center">Product not found</div>
+            }
+            {/* <div className="col-md-6 col-lg-3">
               <ProductComponent src='images/product-1.jpg' />
             </div>
             <div className="col-md-6 col-lg-3">
@@ -68,7 +106,7 @@ function HomeComponent() {
             </div>
             <div className="col-md-6 col-lg-3">
               <ProductComponent src='images/product-12.jpg' />
-            </div>
+            </div> */}
           </div>
 
           <div className="row mt-5">
@@ -92,4 +130,19 @@ function HomeComponent() {
   )
 }
 
-export default HomeComponent;
+function mapStateToProps({ productsReducer, categoriesReducer }, ownProps) {
+  return {
+    products: productsReducer.products,
+    categories: categoriesReducer.categories
+  }
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return bindActionCreators({
+    getProductsAction: getProducts,
+    getCategoriesAction: getCategories
+  }, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeComponent);
