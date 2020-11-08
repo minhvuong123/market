@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Layout, Menu } from 'antd';
+import { Layout, Menu, Spin, Space } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -21,6 +21,7 @@ const { Header, Sider, Content } = Layout;
 function AdminComponent({ location, keyPath }) {
   const [collapsed, setCollapsed] = useState(false);
   const [pathRoute, setPathRoute] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -55,7 +56,11 @@ function AdminComponent({ location, keyPath }) {
   }
 
   useEffect(() => {
-    setPathRoute(location.pathname);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setPathRoute(location.pathname);
+    }, 1000);
     return () => {
       // 
     }
@@ -89,6 +94,9 @@ function AdminComponent({ location, keyPath }) {
           }
         </Content>
       </Layout>
+      {
+        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
+      }
     </Layout>
   );
 }

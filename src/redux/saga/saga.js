@@ -1,15 +1,15 @@
 import { all, put, takeLatest } from 'redux-saga/effects';
-import { actionLabel, ADD_ID } from '../actions';
+import { LOADING_STATUS } from '../actions';
 
-export function* helloSaga() {
+export function* setLoading() {
     yield put({
-        type: ADD_ID,
-        id: Math.random().toString(36).substring(7)
+        type: LOADING_STATUS,
+        loading: false
     });
 }
 
 function* actionWatcher() {
-    yield takeLatest(actionLabel, helloSaga);
+    yield takeLatest('GET_PRODUCT', setLoading);
 }
 
 

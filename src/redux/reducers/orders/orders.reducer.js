@@ -2,19 +2,21 @@ import {
   SAVE_ORDER,
   GET_ORDERS,
   UPDATE_ORDER,
-  UPDATE_ORDERS
+  UPDATE_ORDERS,
+  GET_ORDERS_COUNT
 } from '../../actions';
 
 const initState = {
-  orders: []
+  orders: [],
+  count: 0
 }
 
 const ordersReducer = (state = initState, action) => {
   switch (action.type) {
     case SAVE_ORDER:
-      return { ...state, orders: [...state.orders, action.order] }
+      return {...state, orders: [...state.orders, action.order] }
     case GET_ORDERS:
-      return { ...state, orders: action.orders}
+      return {...state, orders: action.orders}
     case UPDATE_ORDER:
       state.orders.forEach(order => {
         if(order._id === action.order._id) {
@@ -24,7 +26,9 @@ const ordersReducer = (state = initState, action) => {
       })
       return { ...state}
     case UPDATE_ORDERS:
-      return { ...state, orders: action.orders}
+      return {...state, orders: action.orders}
+    case GET_ORDERS_COUNT:
+      return {...state, count: action.count}
     default:
       return state;
   }

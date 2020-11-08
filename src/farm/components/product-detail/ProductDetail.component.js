@@ -4,34 +4,32 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProduct, setLoading } from 'redux/actions';
-import { parseCurrentVND, cancellablePromise } from 'utils';
+import { parseCurrentVND } from 'utils';
 import moment from 'moment';
+import { Spin, Space } from 'antd';
 
 
-
-function ProductDetailComponent({ match, loading, product, getProductAction, setLoadingAction }) {
+function ProductDetailComponent({ match, product, getProductAction }) {
   const product_id = match.params.productID;
-  const [productCom, setProductCom] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoadingAction(true);
-    async function fetchData() {
-      const p = api.get(`/products/${product_id}`).then(results => results.data.product);
-      const { promise, cancel } = cancellablePromise(p);
-      promise.then(d => {
-        getProductAction(d);
-        setProductCom(d);
-        setLoadingAction(false);
+    async function fetData() {
+      setLoading(true);
+      api.get(`/products/${product_id}`).then(results => {
+        setTimeout(() => {
+          setLoading(false);
+          getProductAction(results.data.product);
+        }, 1000);
       });
-      return cancel;
     }
-    fetchData();
-  }, [product_id,  getProductAction, setLoadingAction]);
+    fetData();
+  }, [product_id,  getProductAction]);
 
   function handleAddCart(e) {
     e.preventDefault();
     const order = {
-      order_product: productCom._id,
+      order_product: product._id,
       order_amount: 1,
       order_status: 'pending',
       order_transaction: '',
@@ -43,8 +41,8 @@ function ProductDetailComponent({ match, loading, product, getProductAction, set
       }
     })
   }
-  console.log("loading: ", loading);
-  return productCom && Object.keys(productCom).length !== 0 ? (
+
+  return product && Object.keys(product).length !== 0 ? (
     <React.Fragment>
       {/* <div className="hero-wrap hero-bread" style={{ backgroundImage: 'url(images/bg_1.jpg)' }}>
         <div className="container">
@@ -62,11 +60,11 @@ function ProductDetailComponent({ match, loading, product, getProductAction, set
           <div className="row">
             <div className="col-lg-6 mb-5 ">
               <a href="#" className="image-popup">
-                <img src={`http://localhost:4000/${productCom && productCom.product_images_link[0].url}`} className="img-fluid" alt="Colorlib Template" />
+                <img src={`http://localhost:4000/${product.product_images_link[0].url}`} className="img-fluid" alt="Colorlib Template" />
               </a>
             </div>
             <div className="col-lg-6 product-details pl-md-5 ">
-              <h3>{productCom && productCom.product_title}</h3>
+              <h3>{product.product_title}</h3>
               <div className="rating d-flex">
                 <p className="text-left mr-4">
                   <a href="#" className="mr-2">5.0</a>
@@ -83,7 +81,7 @@ function ProductDetailComponent({ match, loading, product, getProductAction, set
                   <a href="#" className="mr-2" style={{ color: '#000' }}>500 <span style={{ color: '#bbb' }}>Sold</span></a>
                 </p>
               </div>
-              <p className="price"><span>{productCom && parseCurrentVND(productCom.product_price)}</span></p>
+              <p className="price"><span>{parseCurrentVND(product.product_price)}</span></p>
               <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until.
 						</p>
               <div className="row mt-4">
@@ -116,7 +114,7 @@ function ProductDetailComponent({ match, loading, product, getProductAction, set
                 </div>
                 <div className="w-100"></div>
                 <div className="col-md-12">
-                  <p style={{ color: '#000' }}>{productCom && productCom.product_amount} kg available</p>
+                  <p style={{ color: '#000' }}>{product.product_amount} kg available</p>
                 </div>
               </div>
               <p>
@@ -154,14 +152,16 @@ function ProductDetailComponent({ match, loading, product, getProductAction, set
     		</div>
     	</div> */}
       </section>
+      {
+        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
+      }
     </React.Fragment>
   ) : "Not found"
 }
 
 function mapStateToProps({ productsReducer, loadingReducer }, ownProps) {
   return {
-    product: productsReducer.product,
-    loading: loadingReducer.loading
+    product: productsReducer.product
   }
 }
 

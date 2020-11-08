@@ -3,28 +3,32 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CardRowComponent from './card-row/CardRow.component';
-import { getOrders, setLoading } from 'redux/actions';
+import { getOrders } from 'redux/actions';
 import { cancellablePromise } from 'utils';
+import { Spin, Space } from 'antd';
 
-function CardsComponent({ loading, getOrdersAction, setLoadingAction }) {
+function CardsComponent({ getOrdersAction }) {
   const [ordersCom, setOrdersCom] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoadingAction(true);
+    setLoading(true);
     async function fetchData() {
       const p = api.get('/orders').then(results => results.data.orders);
       const { promise, cancel } = cancellablePromise(p);
       promise.then(d => {
-          getOrdersAction(d);
-          setOrdersCom(d);
-          setLoadingAction(false);
+          setTimeout(() => {
+            setLoading(false);
+            getOrdersAction(d);
+            setOrdersCom(d);
+          }, 1000);
       });
       return cancel;
     }
     fetchData();
 
-  }, [getOrdersAction, setLoadingAction])
-  console.log("loading: ", loading);
+  }, [getOrdersAction])
+
   return (
     <React.Fragment>
       <div className="hero-wrap hero-bread" style={{ backgroundImage: 'url(images/bg_1.jpg)' }}>
@@ -129,21 +133,22 @@ function CardsComponent({ loading, getOrdersAction, setLoadingAction }) {
           </div>
         </div>
       </section>
+      {
+        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
+      }
     </React.Fragment>
   )
 }
 
-function mapStateToProps({ ordersReducer, loadingReducer }, ownProps) {
+function mapStateToProps({ ordersReducer }, ownProps) {
   return {
-    orders: ordersReducer.orders,
-    loading: loadingReducer.loading
+    orders: ordersReducer.orders
   }
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
   return bindActionCreators({
-    getOrdersAction: getOrders,
-    setLoadingAction: setLoading
+    getOrdersAction: getOrders
   }, dispatch);
 }
 

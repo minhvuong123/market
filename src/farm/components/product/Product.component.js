@@ -1,8 +1,25 @@
+import api from 'api';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import {parseCurrentVND} from 'utils';
+import { parseCurrentVND } from 'utils';
+import moment from 'moment';
 
 function ProductComponent({ product }) {
+  function handleAddCart(e) {
+    e.preventDefault();
+    const order = {
+      order_product: product._id,
+      order_amount: 1,
+      order_status: 'pending',
+      order_transaction: '',
+      created_at: moment().toISOString()
+    }
+    api.post('/orders', {order}).then(result => {
+      if(result.data.status === 'ok') {
+       // handle message
+      }
+    })
+  }
   return (
     <div className="product">
       <NavLink to={`/product/${product._id}`} className="img-prod"><img className="img-fluid" src={`http://localhost:4000/${product.product_images_link[0].url}`} alt={product.product_title} />
@@ -20,7 +37,7 @@ function ProductComponent({ product }) {
             <a href="#" className="add-to-cart d-flex justify-content-center align-items-center text-center">
               <span><i className="ion-ios-menu"></i></span>
             </a>
-            <a href="#" className="buy-now d-flex justify-content-center align-items-center mx-1">
+            <a onClick={handleAddCart} href="#" className="buy-now d-flex justify-content-center align-items-center mx-1">
               <span><i className="ion-ios-cart"></i></span>
             </a>
             <a href="#" className="heart d-flex justify-content-center align-items-center ">

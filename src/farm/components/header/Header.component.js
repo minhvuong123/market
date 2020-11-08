@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Badge } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import api from 'api';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getOrdersCount } from 'redux/actions';
 
-function HeaderComponent() {
+function HeaderComponent({ orderCount, getOrdersCountAction }) {
+  useEffect(() => {
+    async function fetData() {
+      const result = await api.get('/orders');
+      getOrdersCountAction(result.data.count);
+    }
+    fetData();
+    return () => {}
+  }, [getOrdersCountAction])
+
+  console.log(orderCount)
   return (
     <React.Fragment>
       {/* --------------------------------- */}
@@ -29,7 +45,7 @@ function HeaderComponent() {
         </div>
       </div>
       {/* --------------------------------- */}
-      <nav className="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" style={{boxShadow: '0px 1px #c8c8c8'}}>
+      <nav className="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar" style={{ boxShadow: '0px 1px #c8c8c8' }}>
         <div className="container">
           <a className="navbar-brand" href="index.html">Vegefoods</a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="/ftco-nav"
@@ -39,7 +55,7 @@ function HeaderComponent() {
 
           <div className="collapse navbar-collapse" id="ftco-nav">
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item active"><a href="/" className="nav-link">Home</a></li>
+              <li className="nav-item active"><NavLink to="/" className="nav-link">Home</NavLink></li>
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"
                   aria-expanded="false">Shop</a>
@@ -55,9 +71,13 @@ function HeaderComponent() {
               <li className="nav-item"><NavLink to="/blog" className="nav-link">Blog</NavLink></li>
               <li className="nav-item"><NavLink to="/contact" className="nav-link">Contact</NavLink></li>
               <li className="nav-item"><NavLink to="/admin" className="nav-link">Admin</NavLink></li>
-              <li className="nav-item cta cta-colored"><NavLink to={`/cards`} className="nav-link"><span
-                className="icon-shopping_cart"></span>[0]</NavLink></li>
-
+              <li className="nav-item cta cta-colored">
+                <NavLink to={`/cards`} className="nav-link">
+                  <Badge count={orderCount}>
+                    <ShoppingCartOutlined />
+                  </Badge>
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>
@@ -67,4 +87,18 @@ function HeaderComponent() {
   )
 }
 
-export default HeaderComponent;
+
+function mapStateToProps({ ordersReducer }, ownProps) {
+  return {
+    orderCount: ordersReducer.count
+  }
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return bindActionCreators({
+    getOrdersCountAction: getOrdersCount
+  }, dispatch);
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);

@@ -1,28 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductComponent from 'farm/components/product/Product.component';
 import api from 'api';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProducts, getCategories } from 'redux/actions';
+import { Spin, Space, Menu, Pagination } from 'antd';
 
 function HomeComponent({ products, getProductsAction, categories, getCategoriesAction }) {
+  const [currentProduct, setCurrentProduct] = useState('all');
+  const [currentPagination, setCurrentPagination] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [totalPage, setTotalPage] = useState(0);
+  
   useEffect(() => {
-    Promise.all([api.get('/products'), api.get('/categories')]).then(results => {
-      getProductsAction(results[0].data.products)
-      getCategoriesAction(results[1].data.categories)
-    })
+    setLoading(true);
+    async function fetchData() {
+      const results = await Promise.all([api.get(`/products/${1}/${10}`), api.get('/categories')]);
+      setTimeout(() => {
+        setLoading(false);
+        getCategoriesAction(results[1].data.categories);
+        getProductsAction(results[0].data.products);
+        setTotalPage(results[0].data.count);
+      }, 1000);
+    }
+    fetchData();
     return () => {
 
     }
   }, [getProductsAction, getCategoriesAction])
 
-  function loadDataCategory(e, id) {
-    e.preventDefault();
-
-    api.post(`/products/category`, { id }).then(result => {
-      getProductsAction(result.data.products)
-    })
+  async function loadDataCategory(e, id) {
+    setLoading(true);
+    const result = await api.post(`/products/category`, { id, page: 1, limit: 10 });
+    setTimeout(() => {
+      setLoading(false);
+      getProductsAction(result.data.products);
+      setCurrentProduct(e.key);
+      setTotalPage(result.data.count);
+      setCurrentPagination(1);
+    }, 1000);
   }
+
+  async function handlePagination(page) {
+    setLoading(true);
+    const result = await api.post(`/products/category`, { id: currentProduct, page, limit: 10 });
+    setTimeout(() => {
+      setLoading(false);
+      getProductsAction(result.data.products);
+      setCurrentPagination(page);
+    }, 1000);
+  }
+
   return (
     <React.Fragment>
       <div className="hero-wrap hero-bread" style={{ backgroundImage: 'url(images/bg_1.jpg)' }}>
@@ -40,18 +68,14 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-10 mb-5 text-center">
-              <ul className="product-category">
-                <li><a onClick={(event) => loadDataCategory(event, 'all')} href="/" className="active">All</a></li>
+              <Menu selectedKeys={[currentProduct]} mode="horizontal" className="product-category text-center">
+                <Menu.Item key="all" onClick={(event) => loadDataCategory(event, 'all')}>All</Menu.Item>
                 {
-                  categories 
+                  categories
                   && categories.length
-                  && categories.map(category => {
-                    return  <React.Fragment key={category._id}>
-                              <li><a onClick={(event) => loadDataCategory(event, category._id)} href="/">{category.category_title}</a></li>
-                            </React.Fragment>
-                  })
+                  && categories.map(category => <Menu.Item key={category.category_title} onClick={(event) => loadDataCategory(event, category._id)}> {category.category_title}</Menu.Item>)
                 }
-              </ul>
+              </Menu>
             </div>
           </div>
 
@@ -66,7 +90,7 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
                     </div>
                   </React.Fragment>
                 })
-                : <div className="text-center">Product not found</div>
+                : <div className="text-center col-md-12">Product not found</div>
             }
             {/* <div className="col-md-6 col-lg-3">
               <ProductComponent src='images/product-1.jpg' />
@@ -111,21 +135,25 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
 
           <div className="row mt-5">
             <div className="col text-center">
-              <div className="block-27">
-                <ul>
-                  <li><a href="/">&lt;</a></li>
-                  <li className="active"><span>1</span></li>
-                  <li><a href="/">2</a></li>
-                  <li><a href="/">3</a></li>
-                  <li><a href="/">4</a></li>
-                  <li><a href="/">5</a></li>
-                  <li><a href="/">&gt;</a></li>
-                </ul>
+              <div className="">
+               {
+                  totalPage 
+                  ? <Pagination
+                      className="app-pagination"
+                      current={currentPagination}
+                      onChange={handlePagination}
+                      total={totalPage > 10 ? totalPage : 10}
+                    />
+                  : ""
+               }
               </div>
             </div>
           </div>
         </div>
       </section>
+      {
+        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
+      }
     </React.Fragment>
   )
 }

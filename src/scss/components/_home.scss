@@ -1,0 +1,18 @@
+.product-category{
+  .ant-menu-item:hover{
+    color: #82ae46 !important;
+    border-bottom: 2px solid #82ae46 !important;
+  }
+  .ant-menu-item-selected{
+    color: #82ae46 !important;
+    border-bottom: 2px solid #82ae46 !important;
+  }
+}
+
+.app-pagination{
+  .ant-pagination-item-active{
+    border: unset;
+    background: #82ae46;
+    color: #fff !important;
+  }
+}

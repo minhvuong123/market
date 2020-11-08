@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Spin, Space } from 'antd';
 
 function AboutComponent() {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, [])
   return (
     <React.Fragment>
       <div className="hero-wrap hero-bread" style={{backgroundImage: 'url(images/bg_1.jpg)'}}>
@@ -238,6 +247,9 @@ function AboutComponent() {
           </div>
         </div>
       </section>
+      {
+        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
+      }
     </React.Fragment>
   )
 }
