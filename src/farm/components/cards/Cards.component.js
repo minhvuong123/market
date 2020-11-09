@@ -3,22 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CardRowComponent from './card-row/CardRow.component';
-import { getOrders } from 'redux/actions';
+import { getOrders, setLoading } from 'app-redux/actions';
 import { cancellablePromise } from 'utils';
-import { Spin, Space } from 'antd';
+import { Button, Checkbox, Tag, Modal } from 'antd';
+import { parseCurrentVND } from 'utils';
 
-function CardsComponent({ getOrdersAction }) {
+function CardsComponent({ getOrdersAction, setLoadingAction }) {
   const [ordersCom, setOrdersCom] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    setLoadingAction(true);
     async function fetchData() {
       const p = api.get('/orders').then(results => results.data.orders);
       const { promise, cancel } = cancellablePromise(p);
       promise.then(d => {
           setTimeout(() => {
-            setLoading(false);
+            setLoadingAction(false);
             getOrdersAction(d);
             setOrdersCom(d);
           }, 1000);
@@ -27,7 +28,27 @@ function CardsComponent({ getOrdersAction }) {
     }
     fetchData();
 
-  }, [getOrdersAction])
+  }, [getOrdersAction, setLoadingAction])
+
+  async function handleDelete(id) {
+    const result = await api._delete('/orders/delete', {id});
+    if (result.data.status === 'ok') {
+      const ordersTemp = ordersCom.filter(o => o._id !== id);
+      setOrdersCom(ordersTemp);
+    }
+  }
+
+  function showModal(){
+    setVisible(true);
+  };
+
+  function handleOk(e){
+    setVisible(false);
+  };
+
+  function handleCancel(e){
+    setVisible(false);
+  };
 
   return (
     <React.Fragment>
@@ -62,7 +83,7 @@ function CardsComponent({ getOrdersAction }) {
                     {
                       ordersCom
                         && ordersCom.length
-                        ? ordersCom.map(order => <CardRowComponent key={order._id} order={order} />)
+                        ? ordersCom.map(order => <CardRowComponent key={order._id} order={order} handleDelete={handleDelete} />)
                         : <tr className="text-center">
                           <td colSpan={6}>Not order yet!</td>
                         </tr>
@@ -70,72 +91,28 @@ function CardsComponent({ getOrdersAction }) {
                   </tbody>
                 </table>
               </div>
-            </div>
-          </div>
-          <div className="row justify-content-end">
-            <div className="col-lg-4 mt-5 cart-wrap ">
-              <div className="cart-total mb-3">
-                <h3>Coupon Code</h3>
-                <p>Enter your coupon code if you have one</p>
-                <form action="#" className="info">
-                  <div className="form-group">
-                    <label htmlFor="">Coupon code</label>
-                    <input type="text" className="form-control text-left px-3" placeholder="" />
-                  </div>
-                </form>
+              <div className="card-buy d-flex justify-between align-center mt-30">
+                <div className="card-choose">
+                  <Checkbox>Chọn tất cả ({ordersCom.length})</Checkbox>
+                  <Tag color="magenta" className="pointer">Xóa</Tag>
+                </div>
+                <div className="card-total mr-10 d-flex align-center">
+                    Tổng tiền hàng (1 sản phẩm):  <span className="ml-10" style={{fontSize: 25, color: '#ff4d4f'}}>{parseCurrentVND(1000000)}</span>
+                    <Button onClick={showModal} type="primary" danger className="btn-card-buy ml-15">Mua Hàng</Button>
+                </div>
               </div>
-              <p><a href="checkout.html" className="btn btn-primary py-3 px-4">Apply Coupon</a></p>
-            </div>
-            <div className="col-lg-4 mt-5 cart-wrap ">
-              <div className="cart-total mb-3">
-                <h3>Estimate shipping and tax</h3>
-                <p>Enter your destination to get a shipping estimate</p>
-                <form action="#" className="info">
-                  <div className="form-group">
-                    <label htmlFor="">Country</label>
-                    <input type="text" className="form-control text-left px-3" placeholder="" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="country">State/Province</label>
-                    <input type="text" className="form-control text-left px-3" placeholder="" />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="country">Zip/Postal Code</label>
-                    <input type="text" className="form-control text-left px-3" placeholder="" />
-                  </div>
-                </form>
-              </div>
-              <p><a href="checkout.html" className="btn btn-primary py-3 px-4">Estimate</a></p>
-            </div>
-            <div className="col-lg-4 mt-5 cart-wrap ">
-              <div className="cart-total mb-3">
-                <h3>Cart Totals</h3>
-                <p className="d-flex">
-                  <span>Subtotal</span>
-                  <span>$20.60</span>
-                </p>
-                <p className="d-flex">
-                  <span>Delivery</span>
-                  <span>$0.00</span>
-                </p>
-                <p className="d-flex">
-                  <span>Discount</span>
-                  <span>$3.00</span>
-                </p>
-                <hr />
-                <p className="d-flex total-price">
-                  <span>Total</span>
-                  <span>$17.60</span>
-                </p>
-              </div>
-              <p><a href="checkout.html" className="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
             </div>
           </div>
         </div>
       </section>
-      {
-        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
-      }
+      <Modal
+          title="Vui lòng thêm địa chỉ để nhận hàng"
+          visible={visible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>Check out is here</p>
+        </Modal>
     </React.Fragment>
   )
 }
@@ -148,7 +125,8 @@ function mapStateToProps({ ordersReducer }, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return bindActionCreators({
-    getOrdersAction: getOrders
+    getOrdersAction: getOrders,
+    setLoadingAction: setLoading
   }, dispatch);
 }
 

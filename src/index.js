@@ -4,11 +4,11 @@ import AppComponent from './farm/app/App.component';
 import 'antd/dist/antd.css';
 import './scss/styles.scss';
 import { createStore, applyMiddleware } from 'redux'; 
-import rootReducers from './redux/reducers';
+import rootReducers from './app-redux/reducers';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import createSagaMiddleware from 'redux-saga';
-import { rootSaga } from 'redux/saga/saga';
+import { rootSaga } from 'app-redux/saga/saga';
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(rootReducers);

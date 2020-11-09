@@ -3,21 +3,20 @@ import ProductComponent from 'farm/components/product/Product.component';
 import api from 'api';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getProducts, getCategories } from 'redux/actions';
-import { Spin, Space, Menu, Pagination } from 'antd';
+import { getProducts, getCategories, setLoading } from 'app-redux/actions';
+import { Menu, Pagination } from 'antd';
 
-function HomeComponent({ products, getProductsAction, categories, getCategoriesAction }) {
+function HomeComponent({ products, getProductsAction, categories, getCategoriesAction, setLoadingAction }) {
   const [currentProduct, setCurrentProduct] = useState('all');
   const [currentPagination, setCurrentPagination] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
   
   useEffect(() => {
-    setLoading(true);
+    setLoadingAction(true);
     async function fetchData() {
       const results = await Promise.all([api.get(`/products/${1}/${10}`), api.get('/categories')]);
       setTimeout(() => {
-        setLoading(false);
+        setLoadingAction(false);
         getCategoriesAction(results[1].data.categories);
         getProductsAction(results[0].data.products);
         setTotalPage(results[0].data.count);
@@ -27,7 +26,7 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
     return () => {
 
     }
-  }, [getProductsAction, getCategoriesAction])
+  }, [getProductsAction, getCategoriesAction, setLoadingAction])
 
   async function loadDataCategory(e, id) {
     setLoading(true);
@@ -151,9 +150,6 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
           </div>
         </div>
       </section>
-      {
-        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
-      }
     </React.Fragment>
   )
 }
@@ -168,7 +164,8 @@ function mapStateToProps({ productsReducer, categoriesReducer }, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
   return bindActionCreators({
     getProductsAction: getProducts,
-    getCategoriesAction: getCategories
+    getCategoriesAction: getCategories,
+    setLoadingAction: setLoading
   }, dispatch);
 }
 

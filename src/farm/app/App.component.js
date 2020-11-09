@@ -3,6 +3,7 @@ import Routes, { RenderRoutes } from '../../routes/routes';
 import { withRouter } from 'react-router-dom';
 import FooterComponent from 'farm/components/footer/Footer.component';
 import HeaderComponent from 'farm/components/header/Header.component';
+import LoadingComponent from 'farm/components/loading/Loading.component';
 
 function AppComponent({ location }) {
   const [pathRoute, setPathRoute] = useState('');
@@ -19,7 +20,7 @@ function AppComponent({ location }) {
     }
     return false;
   }
-
+ 
   return (
     <React.Fragment>
       <HeaderComponent />
@@ -27,9 +28,9 @@ function AppComponent({ location }) {
       {
         !adminPage(pathRoute) && <FooterComponent />
       }
+      <LoadingComponent />
     </React.Fragment>
   )
 }
 
-
-export default (withRouter(AppComponent));
+export default withRouter(AppComponent);

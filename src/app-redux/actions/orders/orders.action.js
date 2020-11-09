@@ -3,6 +3,7 @@ export const GET_ORDERS = 'GET_ORDERS';
 export const UPDATE_ORDER = 'UPDATE_ORDER';
 export const UPDATE_ORDERS = 'UPDATE_ORDERS';
 export const GET_ORDERS_COUNT = 'GET_ORDERS_COUNT';
+export const DELETE_ORDER = 'DELETE_ORDER';
 
 export function saveOrder(order) {
   return {
@@ -38,3 +39,11 @@ export function getOrdersCount(count) {
     count
   }
 }
+
+export function deleteOrder(id) {
+  return {
+    type: GET_ORDERS_COUNT,
+    id
+  }
+}
+

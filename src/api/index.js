@@ -17,9 +17,14 @@ function patch(url, payload){
   return axios.patch(api_url + url, payload);
 }
 
+function _delete(url, payload){
+  return axios.post(api_url + url, payload);
+}
+
 export default {
   get,
   post,
   put,
-  patch
+  patch,
+  _delete
 }

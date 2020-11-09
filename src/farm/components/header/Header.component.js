@@ -5,7 +5,7 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 import api from 'api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getOrdersCount } from 'redux/actions';
+import { getOrdersCount } from 'app-redux/actions';
 
 function HeaderComponent({ orderCount, getOrdersCountAction }) {
   useEffect(() => {
@@ -16,8 +16,6 @@ function HeaderComponent({ orderCount, getOrdersCountAction }) {
     fetData();
     return () => {}
   }, [getOrdersCountAction])
-
-  console.log(orderCount)
   return (
     <React.Fragment>
       {/* --------------------------------- */}
@@ -88,7 +86,7 @@ function HeaderComponent({ orderCount, getOrdersCountAction }) {
 }
 
 
-function mapStateToProps({ ordersReducer }, ownProps) {
+function mapStateToProps({ ordersReducer, loadingReducer }, ownProps) {
   return {
     orderCount: ordersReducer.count
   }

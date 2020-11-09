@@ -3,10 +3,10 @@ import { parseCurrentVND } from 'utils';
 import api from 'api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { updateOrder } from 'redux/actions';
+import { updateOrder } from 'app-redux/actions';
 import _ from 'lodash';
 
-function CardRowComponent({ order, updateOrderAction, updateAmount }) {
+function CardRowComponent({ order, updateOrderAction, handleDelete }) {
   const [product, setProduct] = useState([]);
   const [total, setTotal] = useState();
 
@@ -33,10 +33,16 @@ function CardRowComponent({ order, updateOrderAction, updateAmount }) {
       })
     }
   }
+
+  function handleDeleteCard(e, id) {
+    e.preventDefault();
+    handleDelete(id);
+  }
+
   return Object.keys(product).length !== 0 && (
     <React.Fragment>
       <tr className="text-center">
-        <td className="product-remove"><a href="/"><span className="ion-ios-close"></span></a></td>
+        <td onClick={(e) => handleDeleteCard(e, order._id)} className="product-remove"><a href="/"><span className="ion-ios-close"></span></a></td>
         <td className="image-prod">
           <div className="img" style={{ backgroundImage: `url(http://localhost:4000/${product.product_images_link[0].url})` }}></div>
         </td>

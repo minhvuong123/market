@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Spin, Space } from 'antd';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setLoading } from 'app-redux/actions';
 
-function AboutComponent() {
-  const [loading, setLoading] = useState(false);
+function AboutComponent({ setLoadingAction }) {
 
   useEffect(() => {
-    setLoading(true);
+    setLoadingAction(true);
     setTimeout(() => {
-      setLoading(false);
+      setLoadingAction(false);
     }, 1000);
-  }, [])
+  }, [setLoadingAction])
   return (
     <React.Fragment>
       <div className="hero-wrap hero-bread" style={{backgroundImage: 'url(images/bg_1.jpg)'}}>
@@ -247,11 +248,14 @@ function AboutComponent() {
           </div>
         </div>
       </section>
-      {
-        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
-      }
     </React.Fragment>
   )
 }
 
-export default AboutComponent;
+function mapDispatchToProps(dispatch, ownProps) {
+  return bindActionCreators({
+    setLoadingAction: setLoading
+  }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(AboutComponent);

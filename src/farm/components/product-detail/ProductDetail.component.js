@@ -1,30 +1,27 @@
 import api from 'api';
 import ProductComponent from 'farm/components/product/Product.component';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getProduct, setLoading } from 'redux/actions';
+import { getProduct, setLoading } from 'app-redux/actions';
 import { parseCurrentVND } from 'utils';
 import moment from 'moment';
-import { Spin, Space } from 'antd';
 
-
-function ProductDetailComponent({ match, product, getProductAction }) {
+function ProductDetailComponent({ match, product, getProductAction, setLoadingAction }) {
   const product_id = match.params.productID;
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetData() {
-      setLoading(true);
+      setLoadingAction(true);
       api.get(`/products/${product_id}`).then(results => {
         setTimeout(() => {
-          setLoading(false);
+          setLoadingAction(false);
           getProductAction(results.data.product);
         }, 1000);
       });
     }
     fetData();
-  }, [product_id,  getProductAction]);
+  }, [product_id,  getProductAction, setLoadingAction]);
 
   function handleAddCart(e) {
     e.preventDefault();
@@ -152,14 +149,11 @@ function ProductDetailComponent({ match, product, getProductAction }) {
     		</div>
     	</div> */}
       </section>
-      {
-        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
-      }
     </React.Fragment>
   ) : "Not found"
 }
 
-function mapStateToProps({ productsReducer, loadingReducer }, ownProps) {
+function mapStateToProps({ productsReducer }, ownProps) {
   return {
     product: productsReducer.product
   }
