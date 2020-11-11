@@ -5,15 +5,18 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProducts, getCategories, setLoading } from 'app-redux/actions';
 import { Menu, Pagination } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { NavLink } from 'react-router-dom';
+
 
 function HomeComponent({ products, getProductsAction, categories, getCategoriesAction, setLoadingAction }) {
   const [currentProduct, setCurrentProduct] = useState('all');
   const [currentPagination, setCurrentPagination] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  
+
   useEffect(() => {
-    setLoadingAction(true);
     async function fetchData() {
+      setLoadingAction(true);
       const results = await Promise.all([api.get(`/products/${1}/${10}`), api.get('/categories')]);
       setTimeout(() => {
         setLoadingAction(false);
@@ -29,10 +32,10 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
   }, [getProductsAction, getCategoriesAction, setLoadingAction])
 
   async function loadDataCategory(e, id) {
-    setLoading(true);
+    setLoadingAction(true);
     const result = await api.post(`/products/category`, { id, page: 1, limit: 10 });
     setTimeout(() => {
-      setLoading(false);
+      setLoadingAction(false);
       getProductsAction(result.data.products);
       setCurrentProduct(e.key);
       setTotalPage(result.data.count);
@@ -41,10 +44,10 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
   }
 
   async function handlePagination(page) {
-    setLoading(true);
+    setLoadingAction(true);
     const result = await api.post(`/products/category`, { id: currentProduct, page, limit: 10 });
     setTimeout(() => {
-      setLoading(false);
+      setLoadingAction(false);
       getProductsAction(result.data.products);
       setCurrentPagination(page);
     }, 1000);
@@ -55,15 +58,21 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
       <div className="hero-wrap hero-bread" style={{ backgroundImage: 'url(images/bg_1.jpg)' }}>
         <div className="container">
           <div className="row no-gutters slider-text align-items-center justify-content-center">
-            <div className="col-md-9 ftco-animate text-center">
+            <div className="col-md-9 text-center">
               <p className="breadcrumbs"><span className="mr-2"><a href="index.html">Home</a></span> <span>Products</span></p>
               <h1 className="mb-0 bread">Products</h1>
             </div>
           </div>
         </div>
       </div>
-
-      <section className="ftco-section">
+      <div className="row">
+        <div className="p-30 col-md-12 img img-2 d-flex justify-content-center align-items-center">
+          <NavLink to="/search" className="icon d-flex justify-center align-center" style={{ width: 50, height: 50 }}>
+            <SearchOutlined />
+          </NavLink>
+        </div>
+      </div>
+      <section>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-10 mb-5 text-center">
@@ -91,60 +100,21 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
                 })
                 : <div className="text-center col-md-12">Product not found</div>
             }
-            {/* <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-1.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-2.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-3.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-4.jpg' />
-            </div>
-
-
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-5.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-6.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-7.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-8.jpg' />
-            </div>
-
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-9.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-10.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-11.jpg' />
-            </div>
-            <div className="col-md-6 col-lg-3">
-              <ProductComponent src='images/product-12.jpg' />
-            </div> */}
           </div>
 
           <div className="row mt-5">
             <div className="col text-center">
               <div className="">
-               {
-                  totalPage 
-                  ? <Pagination
+                {
+                  totalPage
+                    ? <Pagination
                       className="app-pagination"
                       current={currentPagination}
                       onChange={handlePagination}
                       total={totalPage > 10 ? totalPage : 10}
                     />
-                  : ""
-               }
+                    : ""
+                }
               </div>
             </div>
           </div>

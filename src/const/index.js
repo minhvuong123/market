@@ -41,3 +41,18 @@ export const order_status = [
         order_value: "Cancel"
     }
 ]
+
+export const country = [
+  {
+    country_key: 'TP.HCM',
+    country_value: 'TP.Hồ Chí Minh'
+  },
+  {
+    country_key: 'HN',
+    country_value: 'Hà Nội'
+  },
+  {
+    country_key: 'BT',
+    country_value: 'Bình Thuận'
+  }
+]

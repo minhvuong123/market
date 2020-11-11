@@ -1,0 +1,19 @@
+.app-catalog{
+  .catalog-list{
+    .product-category{
+      .ant-menu-item{
+        height: 20px;
+        line-height: 20px;
+        font-size: 15px;
+      }
+      .ant-menu-item:hover{
+        border-bottom: unset !important;
+      }
+      .ant-menu-item-selected{
+        background-color: unset;
+        border-bottom: unset !important;
+        font-weight: bold;
+      }
+    }
+  }
+}

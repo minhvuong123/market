@@ -4,6 +4,7 @@ import { Spin, Space } from 'antd';
 import { connect } from 'react-redux';
 
 function LoadingComponent({ loading }) {
+  console.log(loading)
   return (
     <React.Fragment>
       {

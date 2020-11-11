@@ -8,6 +8,7 @@ import CardsComponent from 'farm/components/cards/Cards.component';
 import BlogComponent from 'farm/components/blog/Blog.component';
 import ContactComponent from 'farm/components/contact/Contact.component';
 import AboutComponent from 'farm/components/about/About.component';
+import SearchComponent from 'farm/components/search/Search.component';
 
 const RouteWithSubRoutes = (route) => {
   return (
@@ -47,6 +48,12 @@ const Routes = [
     keyPath: 'detail',
     exact: true,
     component: ProductDetailComponent
+  },
+  {
+    path: '/search',
+    keyPath: 'search',
+    exact: true,
+    component: SearchComponent
   },
   {
     path: '/cards',
