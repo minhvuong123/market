@@ -15,7 +15,13 @@ const initState = {
 const ordersReducer = (state = initState, action) => {
   switch (action.type) {
     case SAVE_ORDER:
-      return {...state, orders: [...state.orders, action.order] };
+      const index = state.orders.findIndex(o => o.order_product === action.order.order_product);
+      if (index !== -1) {
+        state.orders[index].order_amount += 1;
+      } else {
+        state.orders = [...state.orders, action.order];
+      }
+      return {...state};
     case GET_ORDERS:
       return {...state, orders: action.orders};
     case UPDATE_ORDER:

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined, HeartOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Checkbox, Input, Rate, Select } from 'antd';
+import { Checkbox, Input, Pagination, Rate, Select } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getProducts, getCategories, setLoading } from 'app-redux/actions';
@@ -32,13 +32,23 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
   }, [getProductsAction, getCategoriesAction, setLoadingAction]);
 
   async function handleCategory(e, id) {
+    // setLoadingAction(true);
+    // const results = await api.post(`/products/category`, { id, page: 1, limit: 10 });
+    // setTimeout(() => {
+    //   setLoadingAction(false);
+    //   getProductsAction(results.data.products);
+    //   setProductsCom(results.data.products);
+    //   setCurrentProduct({ id, value: e.key });
+    // }, 1000);
     setLoadingAction(true);
-    const results = await api.post(`/products/category`, { id, page: 1, limit: 10 });
+    const results = await api.post('/products/filter', { product_category: id, product_ward: productWard });
     setTimeout(() => {
       setLoadingAction(false);
-      getProductsAction(results.data.products);
-      setProductsCom(results.data.products);
-      setCurrentProduct({ id, value: e.key });
+      if (results.data.products && results.data.products.length) {
+        setProductsCom(results.data.products);
+        getProductsAction(results.data.products);
+        setCurrentProduct({ id, value: e.key });
+      }
     }, 1000);
   }
 
@@ -53,7 +63,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
       }
     }, 1000);
   }
-  console.log(productWard)
+
   return (
     <React.Fragment>
       <div className="container">
@@ -87,7 +97,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
               <div className="border-b-1" style={{ paddingLeft: 15 }}>
                 <h4>Nơi bán</h4>
                 <div className="catalog-filter-content d-flex flex-column">
-                  <Checkbox.Group defaultValue={productWard} onChange={handleCheckBoxWard}>
+                  <Checkbox.Group  onChange={handleCheckBoxWard}>
                     {
                       country.map(c => {
                         return <React.Fragment key={c.country_key}>
@@ -102,7 +112,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
                 </div>
               </div>
 
-              <div className="border-b-1" style={{ marginTop: 15, paddingLeft: 15 }}>
+              {/* <div className="border-b-1" style={{ marginTop: 15, paddingLeft: 15 }}>
                 <h4>Đơn vị vận chuyển</h4>
                 <div className="catalog-filter-content d-flex flex-column">
                   <Checkbox.Group>
@@ -126,7 +136,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
                   </Checkbox.Group>
                   <a href="/" className="d-flex align-center" style={{ marginTop: 5, marginBottom: 5 }}>Thêm <DownCircleOutlined style={{ marginLeft: 5 }} /></a>
                 </div>
-              </div>
+              </div> */}
 
               {/* <div className="border-b-1" style={{ marginTop: 15, paddingLeft: 15 }}>
                 <h4>Khoảng giá</h4>
@@ -204,11 +214,12 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
                 </Select>
               </div>
               <div className="d-flex align-center">
-                <span>1/100</span>
+                {/* <span>1/100</span>
                 <div className="product-arrow d-flex align-center ml-10">
                   <span className="pointer line-height-0 bg-white" style={{ padding: '1rem' }}><LeftOutlined /></span>
                   <span className="pointer line-height-0 border-l-1 bg-white" style={{ padding: '1rem' }}><RightOutlined /></span>
-                </div>
+                </div> */}
+                <Pagination simple defaultCurrent={2} total={50} />
               </div>
             </div>
 

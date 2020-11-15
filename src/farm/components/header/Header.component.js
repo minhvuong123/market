@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getOrdersCount } from 'app-redux/actions';
 
-function HeaderComponent({ orderCount, getOrdersCountAction }) {
+function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
   useEffect(() => {
     async function fetData() {
       const result = await api.get('/orders');
@@ -15,7 +15,7 @@ function HeaderComponent({ orderCount, getOrdersCountAction }) {
     }
     fetData();
     return () => {}
-  }, [getOrdersCountAction])
+  }, [getOrdersCountAction, orders])
   return (
     <React.Fragment>
       {/* --------------------------------- */}
@@ -88,7 +88,8 @@ function HeaderComponent({ orderCount, getOrdersCountAction }) {
 
 function mapStateToProps({ ordersReducer, loadingReducer }, ownProps) {
   return {
-    orderCount: ordersReducer.count
+    orderCount: ordersReducer.count,
+    orders: ordersReducer.orders
   }
 }
 

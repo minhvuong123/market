@@ -14,11 +14,14 @@ import UserComponent from './users/Users.component';
 import ProductsComponent from './products/Products.component';
 import CategoriesComponent from './categories/Categories.component';
 import OrdersComponent from './orders/Orders.component';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { setLoading } from 'app-redux/actions';
 
 const { Header, Sider, Content } = Layout;
 
 
-function AdminComponent({ location, keyPath }) {
+function AdminComponent({ location, keyPath, setLoadingAction }) {
   const [collapsed, setCollapsed] = useState(false);
   const [pathRoute, setPathRoute] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,7 +43,7 @@ function AdminComponent({ location, keyPath }) {
     const subPages = ['admin/users', 'admin/products', 'admin/categories', 'admin/orders', 'admin/transaction'];
     const index = indexSubPage(subPages, path);
     switch(subPages[index]) {
-      case subPages[0]:
+      case subPages[0] || 'admin':
         return <UserComponent />
       case subPages[1]:
         return <ProductsComponent />
@@ -56,15 +59,15 @@ function AdminComponent({ location, keyPath }) {
   }
 
   useEffect(() => {
-    setLoading(true);
+    setLoadingAction(true);
     setTimeout(() => {
-      setLoading(false);
+      setLoadingAction(false);
       setPathRoute(location.pathname);
     }, 1000);
     return () => {
       // 
     }
-  }, [location.pathname])
+  }, [location.pathname, setLoadingAction])
   return (
     <Layout className="admin-page">
       <Sider className="site-layout-background" trigger={null} collapsible collapsed={collapsed}>
@@ -101,4 +104,11 @@ function AdminComponent({ location, keyPath }) {
   );
 }
 
-export default AdminComponent;
+function mapDispatchToProps(dispatch, ownProps) {
+  return bindActionCreators({
+    setLoadingAction: setLoading
+  }, dispatch);
+}
+
+
+export default connect(null, mapDispatchToProps)(AdminComponent);

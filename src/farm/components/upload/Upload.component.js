@@ -4,7 +4,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import api from 'api';
 import _ from 'lodash';
 
-function UploadComponent({ images, limit, product_id }) {
+function UploadComponent({ images, limit, handleChangeImage }) {
   const [fileListCom, setFileListCom] = useState();
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState();
@@ -12,20 +12,24 @@ function UploadComponent({ images, limit, product_id }) {
   const [limitImage, setLimitImage] = useState(1);
 
   useEffect(() => {
-    const imagesTemp = _.cloneDeepWith(images);
-    imagesTemp.forEach(image => {
-      image.url = `http://localhost:4000/${image.url}`
-    })
-    setFileListCom(imagesTemp);
-    if (limit && limit > 0) {
-      setLimitImage(limit);
-    } else {
-      setLimitImage(-1);
+    if (!fileListCom) {
+      const imagesTemp = _.cloneDeepWith(images);
+      imagesTemp.forEach(image => {
+        image.url = `http://localhost:4000/${image.user_image}`;
+        image.uid = image._id;
+        image.name = image.user_image.split("users/")[1];
+      })
+      setFileListCom(imagesTemp);
+      if (limit && limit > 0) {
+        setLimitImage(limit);
+      } else {
+        setLimitImage(-1);
+      }
     }
     return () => {
 
     }
-  }, [images, limit])
+  }, [images, limit, fileListCom])
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -53,27 +57,18 @@ function UploadComponent({ images, limit, product_id }) {
     if (file.status === 'removed') {
       setFileListCom(fileList);
     } else {
-      const result = await getBase64(file.originFileObj);
-      api.put('/products/upload', { base64: result, file: file, type: 'list', product_id: product_id }).then(result => {
-        const fileTemp = fileList.find(f => f.uid === file.uid);
-        if (fileTemp) {
-          fileTemp.status = 'done';
-          setFileListCom(fileList);
-        }
-      })
+      const fileTemp = fileList.find(f => f.uid === file.uid);
+      if (fileTemp) {
+        fileTemp.status = 'done';
+        setFileListCom(fileList);
+      }
     }
   }
 
   async function handleRequest({ file }) {
-    // const result = await getBase64(file);
-    // console.log(fileListCom);
-    // api.put('/products/upload', { base64: result, file: file, type: 'list', product_id: product_id }).then(result => {
-    //   const fileTemp = fileListCom.find(f => f.uid === file.uid);
-    //   if (fileTemp) {
-    //     fileTemp.status = 'done';
-    //     setFileListCom(fileListCom);
-    //   }
-    // })
+    const result = await getBase64(file);
+    const type = file.type.split('/')[1];
+    handleChangeImage(result, type);
   }
 
   const uploadButton = (

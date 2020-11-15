@@ -3,8 +3,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { parseCurrentVND } from 'utils';
 import moment from 'moment';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { saveOrder } from 'app-redux/actions';
 
-function ProductComponent({ product }) {
+function ProductComponent({ product, saveOrderAction }) {
   function handleAddCart(e) {
     e.preventDefault();
     const order = {
@@ -17,6 +20,7 @@ function ProductComponent({ product }) {
     api.post('/orders', {order}).then(result => {
       if(result.data.status === 'ok') {
        // handle message
+       saveOrderAction(order);
       }
     })
   }
@@ -50,4 +54,11 @@ function ProductComponent({ product }) {
   )
 }
 
-export default ProductComponent;
+function mapDispatchToProps(dispatch, ownProps) {
+  return bindActionCreators({
+    saveOrderAction: saveOrder 
+  }, dispatch);
+}
+
+
+export default connect(null, mapDispatchToProps)(ProductComponent);

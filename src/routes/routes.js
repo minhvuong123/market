@@ -81,7 +81,7 @@ const Routes = [
   },
   {
     path: '/admin',
-    keyPath: 'admin',
+    keyPath: 'users',
     exact: true,
     component: AdminComponent
   },
