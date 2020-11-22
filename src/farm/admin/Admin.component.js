@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Menu, Spin, Space } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -17,6 +17,7 @@ import OrdersComponent from './orders/Orders.component';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setLoading } from 'app-redux/actions';
+import { pageTitle } from 'const';
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,7 +25,6 @@ const { Header, Sider, Content } = Layout;
 function AdminComponent({ location, keyPath, setLoadingAction }) {
   const [collapsed, setCollapsed] = useState(false);
   const [pathRoute, setPathRoute] = useState('');
-  const [loading, setLoading] = useState(false);
 
   function toggle() {
     setCollapsed(!collapsed);
@@ -39,19 +39,26 @@ function AdminComponent({ location, keyPath, setLoadingAction }) {
     })
     return index;
   }
+
+  function getSubPage(path) {
+    return path.slice(1);
+  }
+
   function renderAdminSubPage(path) {
-    const subPages = ['admin/users', 'admin/products', 'admin/categories', 'admin/orders', 'admin/transaction'];
+    const subPages = ['admin', 'admin/users', 'admin/products', 'admin/categories', 'admin/orders', 'admin/transaction'];
     const index = indexSubPage(subPages, path);
     switch(subPages[index]) {
-      case subPages[0] || 'admin':
+      case subPages[0]:
         return <UserComponent />
       case subPages[1]:
-        return <ProductsComponent />
+        return <UserComponent />
       case subPages[2]:
-        return <CategoriesComponent />
+        return <ProductsComponent />
       case subPages[3]:
-        return <OrdersComponent />
+        return <CategoriesComponent />
       case subPages[4]:
+        return <OrdersComponent />
+      case subPages[5]:
         return <div>transaction page</div>
       default:
         return;
@@ -83,7 +90,7 @@ function AdminComponent({ location, keyPath, setLoadingAction }) {
       <Layout className="site-layout">
         <Header className="site-layout-background admin-header">
           { React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, { className: 'trigger', onClick: toggle}) }
-          <h3 className="admin-title">Users Manage</h3>
+          <h3 className="admin-title">{ pageTitle[getSubPage(pathRoute)] }</h3>
         </Header>
         <Content
           className="site-layout-background"
@@ -97,9 +104,6 @@ function AdminComponent({ location, keyPath, setLoadingAction }) {
           }
         </Content>
       </Layout>
-      {
-        loading && <Space className="app-loading" size="middle"><Spin size="large" /> </Space>
-      }
     </Layout>
   );
 }

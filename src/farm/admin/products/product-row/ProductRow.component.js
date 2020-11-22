@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { EllipsisOutlined } from '@ant-design/icons';
-import { Checkbox, Tag, Modal, Button, Form, Input } from 'antd';
+import { Checkbox, Tag, Modal, Button, Form, Input, Select } from 'antd';
 import UploadComponent from 'farm/components/upload/Upload.component';
 import api from 'api';
+import moment from 'moment';
+
+const { Option } = Select;
 
 function ProductRowComponent({ product }) {
   const [visible, setVisible] = useState(false);
   const [productCom, setProductCom] = useState();
+  const [categories, setCategories] = useState();
+  const [base64, setBase64] = useState('');
 
   useEffect(() => {
-    setProductCom(product);
+    api.get(`/categories`).then(result => {
+      setCategories(result.data.categories);
+      setProductCom(product);
+    })
     return () => {
 
     }
@@ -25,11 +33,11 @@ function ProductRowComponent({ product }) {
 
   function onFinish(values) {
     update(values);
-
   };
 
   function update(data) {
-    const mergeProduct = Object.assign(productCom, { ...data, product_price: +data.product_price, product_amount: +data.product_amount, product_discount: +data.product_discount });
+    data.product_image_base64 = base64;
+    const mergeProduct = Object.assign(productCom, data);
 
     api.patch('/products', { product: mergeProduct }).then(result => {
       if (result.data.status === 'ok') {
@@ -42,6 +50,14 @@ function ProductRowComponent({ product }) {
     console.log('Failed:', errorInfo);
   };
 
+  function handleChangeImage(base64, type) {
+    setBase64(base64);
+  }
+
+  function handleChange(value) {
+    console.log(`Selected: ${value}`);
+  }
+
   return (
     <React.Fragment>
       <tr>
@@ -49,12 +65,12 @@ function ProductRowComponent({ product }) {
         <td>{productCom && productCom.product_title}</td>
         <td>
           <div style={{ maxWidth: 100 }}>
-            <img src={`http://localhost:4000/${productCom && productCom.product_images_link[0].url}`} alt="" />
+            <img src={`http://localhost:4000/${productCom && productCom.product_images_link[0].image_url}`} alt="" />
           </div>
         </td>
         <td>{productCom && productCom.product_price}</td>
         <td>{productCom && productCom.product_amount}</td>
-        <td>{productCom && productCom.created_at}</td>
+        <td>{productCom && moment(productCom.created_at).format('DD-MM-YYYY hh:mm')}</td>
         <td>
           <Tag onClick={showModal} color="magenta" style={{ cursor: 'pointer' }}><EllipsisOutlined /></Tag>
         </td>
@@ -82,8 +98,7 @@ function ProductRowComponent({ product }) {
             product_origin: productCom && productCom.product_origin,
             product_supplier: productCom && productCom.product_supplier,
             product_category: productCom && productCom.product_category,
-            product_discount: productCom && productCom.product_discount,
-            created_at: productCom && productCom.created_at
+            product_discount: productCom && productCom.product_discount
           }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -106,7 +121,7 @@ function ProductRowComponent({ product }) {
           </Form.Item>
           <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
             <Form.Item label="Images Link" name="product_images_link" >
-              <UploadComponent images={productCom && productCom.product_images_link} limit={1} product_id={product._id} />
+              <UploadComponent images={productCom && productCom.product_images_link} limit={1} product_id={product._id}  handleChangeImage={handleChangeImage}  />
             </Form.Item>
             <Form.Item label="Images List" name="product_images_list" >
               <UploadComponent images={productCom && productCom.product_images_list} product_id={product._id} />
@@ -114,7 +129,11 @@ function ProductRowComponent({ product }) {
           </Form.Item>
           <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
             <Form.Item label="Type" name="product_type" >
-              <Input />
+              <Select onChange={handleChange}>
+                {
+                  categories && categories.map(c => <Option key={c._id} value={c._id}>{c.category_title}</Option>)
+                }
+              </Select>
             </Form.Item>
             <Form.Item label="Origin" name="product_origin" rules={[{ required: true, message: 'Product origin not valid!' }]}  >
               <Input />
@@ -126,9 +145,6 @@ function ProductRowComponent({ product }) {
 
           <Form.Item label="Description" name="product_des" rules={[{ required: true, message: 'Product description not valid!' }]}  >
             <Input.TextArea />
-          </Form.Item>
-          <Form.Item label="Created_at" rules={[{ required: true, message: 'Product Created_at not valid!' }]} >
-            created_at
           </Form.Item>
           <Form.Item>
             <Button onClick={handleCancel}>Cancel</Button>

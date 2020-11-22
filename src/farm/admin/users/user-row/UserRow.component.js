@@ -67,7 +67,7 @@ function UserRowComponent({ user }) {
         <td>{userCom && userCom.user_name}</td>
         <td>
           <div style={{ maxWidth: 100 }}>
-            <img src={`http://localhost:4000/${userCom && userCom.user_image}`} alt="" />
+            <img src={`http://localhost:4000/${userCom && userCom.image_url}`} alt="" />
           </div>
         </td>
         <td>{userCom && userCom.user_email}</td>

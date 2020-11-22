@@ -15,9 +15,9 @@ function UploadComponent({ images, limit, handleChangeImage }) {
     if (!fileListCom) {
       const imagesTemp = _.cloneDeepWith(images);
       imagesTemp.forEach(image => {
-        image.url = `http://localhost:4000/${image.user_image}`;
-        image.uid = image._id;
-        image.name = image.user_image.split("users/")[1];
+        image.url = `http://localhost:4000/${image.image_url}`;
+        image.uid = image._id || image.uid;
+        image.name = image.image_url.split("images/")[1];
       })
       setFileListCom(imagesTemp);
       if (limit && limit > 0) {

@@ -55,4 +55,13 @@ export const country = [
     country_key: 'BT',
     country_value: 'Bình Thuận'
   }
-]
+];
+
+export const pageTitle = {
+  "admin": 'Users Manager',
+  "admin/users": 'Users Manager',
+  "admin/products": 'Products Manager',
+  "admin/categories": 'Categories Manager',
+  "admin/orders": 'Orders Manager',
+  "admin/transaction": 'Transaction Manager',
+}
