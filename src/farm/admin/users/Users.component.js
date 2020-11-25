@@ -84,6 +84,11 @@ function UsersComponent() {
     console.log(e.target.value);
   }
 
+  function handleDeleteUser(id) {
+    const results = users.filter(c => c._id !== id);
+    setUsers(results);
+  }
+
   return (
     <React.Fragment>
       <div className="users-search margin-auto mt-20 mb-20" style={{ width: '50%' }}>
@@ -107,7 +112,7 @@ function UsersComponent() {
             {
               users
                 && users.length
-                ? users.map(user => <UserRowComponent key={user._id} user={user} />)
+                ? users.map(user => <UserRowComponent key={user._id} user={user} handleDeleteUser={handleDeleteUser} />)
                 : <React.Fragment>
                   <tr>
                     <td colSpan={8} className="text-center">User not found!</td>

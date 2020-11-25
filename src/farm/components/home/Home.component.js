@@ -65,7 +65,7 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
           </div>
         </div>
       </div>
-      <div className="row">
+      <div className="row mr-0 ml-0">
         <div className="p-30 col-md-12 img img-2 d-flex justify-content-center align-items-center">
           <NavLink to="/search" className="icon d-flex justify-center align-center" style={{ width: 50, height: 50 }}>
             <SearchOutlined />

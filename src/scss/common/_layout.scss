@@ -307,6 +307,10 @@ img{
   margin-right: 2rem;
 }
 
+.mr-30{
+  margin-right: 3rem;
+}
+
 .mb-5{
   margin-bottom: .5rem;
 }
@@ -321,6 +325,10 @@ img{
 
 .mb-20{
   margin-bottom: 2rem;
+}
+
+.mb-30{
+  margin-bottom: 4rem;
 }
 
 .line-height-1{
@@ -411,7 +419,7 @@ a{
 
 // color
 .color-white{
-  color: #fff;
+  color: #fff !important;
 }
 
 // position

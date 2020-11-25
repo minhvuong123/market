@@ -1,21 +1,32 @@
 import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Badge } from 'antd';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Badge, Menu, Dropdown } from 'antd';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import api from 'api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getOrdersCount } from 'app-redux/actions';
 
+
 function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
+
   useEffect(() => {
     async function fetData() {
       const result = await api.get('/orders');
       getOrdersCountAction(result.data.count);
     }
     fetData();
-    return () => {}
+    return () => { }
   }, [getOrdersCountAction, orders])
+
+  const loginUser = (
+    <Menu>
+      <Menu.Item key="0" >
+        <a href="/" className="user-sign-out" style={{ fontSize: 11 }} onClick={e => e.preventDefault()}>SIGN OUT</a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
     <React.Fragment>
       {/* --------------------------------- */}
@@ -24,18 +35,31 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
           <div className="row no-gutters d-flex align-items-start align-items-center px-md-0">
             <div className="col-lg-12 d-block">
               <div className="row d-flex">
-                <div className="col-md pr-4 d-flex topper align-items-center">
+                <div className="col-md-2 pr-4 d-flex topper align-items-center">
                   <div className="icon mr-2 d-flex justify-content-center align-items-center"><span className="icon-phone2"></span>
                   </div>
                   <span className="text">+ 1235 2355 98</span>
                 </div>
-                <div className="col-md pr-4 d-flex topper align-items-center">
+                <div className="col-md-3 pr-4 d-flex topper align-items-center">
                   <div className="icon mr-2 d-flex justify-content-center align-items-center"><span
                     className="icon-paper-plane"></span></div>
                   <span className="text">youremail@email.com</span>
                 </div>
                 <div className="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
                   <span className="text">3-5 Business days delivery &amp; Free Returns</span>
+                </div>
+                <div className="col-md-2 pr-4 d-flex topper align-items-center text-lg-right">
+                  <div className="">
+                    <NavLink className="ant-dropdown-link color-white pt-10 pb-10 mr-20" to="/sign-up">SIGN IN</NavLink>
+                    <NavLink className="ant-dropdown-link color-white pt-10 pb-10" to="/sign-in">SIGN UP</NavLink>
+                  </div>
+                  {
+                    true
+                      ? ''
+                      : <Dropdown overlay={loginUser} trigger={['click']}>
+                        <a className="ant-dropdown-link color-white line-height-0" href="/" onClick={e => e.preventDefault()}><UserOutlined /></a>
+                      </Dropdown>
+                  }
                 </div>
               </div>
             </div>
@@ -54,17 +78,6 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
           <div className="collapse navbar-collapse" id="ftco-nav">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item active"><NavLink to="/" className="nav-link">Home</NavLink></li>
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">Shop</a>
-                <div className="dropdown-menu" aria-labelledby="dropdown04">
-                  <a className="dropdown-item" href="/">Shop</a>
-                  <a className="dropdown-item" href="/">Wishlist</a>
-                  <a className="dropdown-item" href="/">Single Product</a>
-                  <a className="dropdown-item" href="/">Cart</a>
-                  <a className="dropdown-item" href="/">Checkout</a>
-                </div>
-              </li>
               <li className="nav-item"><NavLink to="/about" className="nav-link">About</NavLink></li>
               <li className="nav-item"><NavLink to="/blog" className="nav-link">Blog</NavLink></li>
               <li className="nav-item"><NavLink to="/contact" className="nav-link">Contact</NavLink></li>

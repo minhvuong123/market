@@ -9,6 +9,8 @@ import BlogComponent from 'farm/components/blog/Blog.component';
 import ContactComponent from 'farm/components/contact/Contact.component';
 import AboutComponent from 'farm/components/about/About.component';
 import SearchComponent from 'farm/components/search/Search.component';
+import RegisterComponent from 'farm/components/register/Resgister.component';
+import LoginComponent from 'farm/components/login/Login.component';
 
 const RouteWithSubRoutes = (route) => {
   return (
@@ -114,6 +116,18 @@ const Routes = [
     keyPath: 'transaction',
     exact: true,
     component: AdminComponent
+  },
+  {
+    path: '/sign-up',
+    keyPath: 'sign-up',
+    exact: true,
+    component: RegisterComponent
+  },
+  {
+    path: '/sign-in',
+    keyPath: 'sign-in',
+    exact: true,
+    component: LoginComponent
   },
   {
     path: "/app",

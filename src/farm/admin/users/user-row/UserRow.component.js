@@ -12,7 +12,7 @@ const layout = {
 };
 
 
-function UserRowComponent({ user }) {
+function UserRowComponent({ user, handleDeleteUser }) {
   const [visible, setVisible] = useState(false);
   const [userCom, setUserCom] = useState();
   const [base64, setBase64] = useState('');
@@ -60,6 +60,14 @@ function UserRowComponent({ user }) {
     setBase64(base64);
   }
 
+  function handleDelete(id) {
+    api._delete('/users/delete', { id }).then(result => {
+      if (result.data.status === 'ok') {
+        handleDeleteUser(id);
+      }
+    })
+  }
+
   return (
     <React.Fragment>
       <tr>
@@ -76,6 +84,7 @@ function UserRowComponent({ user }) {
         <td>{userCom && moment(userCom.created_at).format('DD-MM-YYYY hh:mm')}</td>
         <td>
           <Tag onClick={showModal} color="magenta" style={{ cursor: 'pointer' }}>Edit</Tag>
+          <Tag onClick={() => handleDelete(user._id)} color="magenta" style={{ cursor: 'pointer' }}>Delete</Tag>
         </td>
       </tr>
       <Modal

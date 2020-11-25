@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { setLoading } from 'app-redux/actions';
 
-function CheckoutComponent({setLoadingAction}) {
+function CheckoutComponent({ setLoadingAction }) {
 
   useEffect(() => {
     setLoadingAction(true);
