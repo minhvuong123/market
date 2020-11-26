@@ -16,6 +16,7 @@ function UserRowComponent({ user, handleDeleteUser }) {
   const [visible, setVisible] = useState(false);
   const [userCom, setUserCom] = useState();
   const [base64, setBase64] = useState('');
+  const [typeImage, setTypeImage] = useState('');
 
   useEffect(() => {
     setUserCom({ ...user, status: 'done' });
@@ -41,8 +42,9 @@ function UserRowComponent({ user, handleDeleteUser }) {
     data.user_image_base64 = base64;
     const mergeUser = Object.assign(userCom, data);
 
-    api.patch('/users', { user: mergeUser }).then(result => {
+    api.patch('/users', { user: mergeUser, typeImage }).then(result => {
       if (result.data.status === 'ok') {
+        userCom.image_url = result.data.image_url;
         setVisible(false);
       }
     })
@@ -58,6 +60,7 @@ function UserRowComponent({ user, handleDeleteUser }) {
 
   function handleChangeImage(base64, type) {
     setBase64(base64);
+    setTypeImage(type);
   }
 
   function handleDelete(id) {
