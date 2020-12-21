@@ -1,11 +1,12 @@
 import api from 'api';
-import ProductComponent from 'farm/components/product/Product.component';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProduct, setLoading } from 'app-redux/actions';
 import { parseCurrentVND } from 'utils';
+import { message } from 'antd';
 import moment from 'moment';
+import jwt from 'jsonwebtoken';
 
 function ProductDetailComponent({ match, product, getProductAction, setLoadingAction }) {
   const product_id = match.params.productID;
@@ -25,8 +26,13 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
 
   function handleAddCart(e) {
     e.preventDefault();
+
+    const token = localStorage.getItem('token');
+    const decoded = jwt.verify(token, 'kiwi');
+
     const order = {
-      order_product: product._id,
+      order_user: decoded._doc._id,
+      order_product: product,
       order_amount: 1,
       order_status: 'pending',
       order_transaction: '',
@@ -34,7 +40,19 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
     }
     api.post('/orders', {order}).then(result => {
       if(result.data.status === 'ok') {
-       // handle message
+        // message to notification
+        message.open({
+          type: 'info',
+          content: 'Added to card successfully!',
+          duration: 1,
+        });
+      } else {
+        // message to notification
+        message.open({
+          type: 'warning',
+          content: 'Added to card failed...',
+          duration: 1,
+        });
       }
     })
   }
@@ -56,26 +74,26 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
         <div className="container">
           <div className="row">
             <div className="col-lg-6 mb-5 ">
-              <a href="#" className="image-popup">
-                <img src={`http://localhost:4000/${product.product_images_link[0].url}`} className="img-fluid" alt="Colorlib Template" />
+              <a href="/" className="image-popup">
+                <img src={`http://localhost:4000/${product.product_images_link[0].image_url}`} className="img-fluid" alt="Colorlib Template" />
               </a>
             </div>
             <div className="col-lg-6 product-details pl-md-5 ">
               <h3>{product.product_title}</h3>
               <div className="rating d-flex">
                 <p className="text-left mr-4">
-                  <a href="#" className="mr-2">5.0</a>
-                  <a href="#"><span className="ion-ios-star-outline"></span></a>
-                  <a href="#"><span className="ion-ios-star-outline"></span></a>
-                  <a href="#"><span className="ion-ios-star-outline"></span></a>
-                  <a href="#"><span className="ion-ios-star-outline"></span></a>
-                  <a href="#"><span className="ion-ios-star-outline"></span></a>
+                  <a href="/" className="mr-2">5.0</a>
+                  <a href="/"><span className="ion-ios-star-outline"></span></a>
+                  <a href="/"><span className="ion-ios-star-outline"></span></a>
+                  <a href="/"><span className="ion-ios-star-outline"></span></a>
+                  <a href="/"><span className="ion-ios-star-outline"></span></a>
+                  <a href="/"><span className="ion-ios-star-outline"></span></a>
                 </p>
                 <p className="text-left mr-4">
-                  <a href="#" className="mr-2" style={{ color: '#000' }}>100 <span style={{ color: '#bbb' }}>Rating</span></a>
+                  <a href="/" className="mr-2" style={{ color: '#000' }}>100 <span style={{ color: '#bbb' }}>Rating</span></a>
                 </p>
                 <p className="text-left">
-                  <a href="#" className="mr-2" style={{ color: '#000' }}>500 <span style={{ color: '#bbb' }}>Sold</span></a>
+                  <a href="/" className="mr-2" style={{ color: '#000' }}>500 <span style={{ color: '#bbb' }}>Sold</span></a>
                 </p>
               </div>
               <p className="price"><span>{parseCurrentVND(product.product_price)}</span></p>

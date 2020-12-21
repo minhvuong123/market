@@ -6,15 +6,11 @@ import { connect } from 'react-redux';
 import { updateOrder } from 'app-redux/actions';
 import _ from 'lodash';
 
-function CardRowComponent({ order, updateOrderAction, handleDelete }) {
-  const [product, setProduct] = useState([]);
+function CardRowComponent({ order, updateOrderAction, updateOrders, handleDelete }) {
   const [total, setTotal] = useState();
 
   useEffect(() => {
-    api.get(`/products/${order.order_product}`).then(result => {
-      setProduct(result.data.product);
-      setTotal(result.data.product.product_price * order.order_amount);
-    });
+    setTotal(order.order_product.product_price * order.order_amount);
     return () => { }
   }, [order])
 
@@ -23,7 +19,8 @@ function CardRowComponent({ order, updateOrderAction, handleDelete }) {
   
     if (quantity !== '' && isNaN(quantity) === false) {
       const orderSave = _.cloneDeepWith({...order, order_amount: +quantity});
-      setTotal(product.product_price * +quantity);
+      setTotal(order.order_product.product_price * +quantity);
+      updateOrders(order._id, quantity);
       updateOrderAction(orderSave);
   
       api.post('/orders', {order: orderSave, orderChange: true}).then(result => {
@@ -39,18 +36,18 @@ function CardRowComponent({ order, updateOrderAction, handleDelete }) {
     handleDelete(id);
   }
 
-  return Object.keys(product).length !== 0 && (
+  return (
     <React.Fragment>
       <tr className="text-center">
         <td onClick={(e) => handleDeleteCard(e, order._id)} className="product-remove"><a href="/"><span className="ion-ios-close"></span></a></td>
         <td className="image-prod">
-          <div className="img" style={{ backgroundImage: `url(http://localhost:4000/${product.product_images_link[0].url})` }}></div>
+          <div className="img" style={{ backgroundImage: `url(http://localhost:4000/${order.order_product.product_images_link[0].image_url})` }}></div>
         </td>
         <td className="product-name">
-          <h3>{product && product.product_title}</h3>
+          <h3>{order.order_product.product_title}</h3>
           <p>Far far away, behind the word mountains, far from the countries</p>
         </td>
-        <td className="price">{product && product.product_price}</td>
+        <td className="price">{parseCurrentVND(order.order_product.product_price)}</td>
         <td className="quantity">
           <div className="input-group mb-3">
             <input  onChange={handleChangeQuantity} 

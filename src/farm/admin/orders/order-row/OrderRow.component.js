@@ -1,6 +1,6 @@
 import { Checkbox, Tag, Modal, Button, Form, Select } from 'antd';
 import { order_status } from 'const';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const { Option } = Select;
 

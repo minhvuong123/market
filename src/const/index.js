@@ -1,5 +1,6 @@
-export const api_url = 'http://localhost:4000';
 
+export * from './countries/countries.js';
+export const api_url = 'http://localhost:4000';
 export const supplier = [
     {
         supplier_key: "vs",
@@ -25,8 +26,7 @@ export const supplier = [
         supplier_key: "vn",
         supplier_value: "Vineco"
     },
-]
-
+];
 export const order_status = [
     {
         order_key: "pending",
@@ -40,7 +40,7 @@ export const order_status = [
         order_key: "cancel",
         order_value: "Cancel"
     }
-]
+];
 
 export const country = [
   {

@@ -2,31 +2,55 @@ import api from 'api';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { parseCurrentVND } from 'utils';
-import moment from 'moment';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { saveOrder } from 'app-redux/actions';
+import { message } from 'antd';
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 function ProductComponent({ product, saveOrderAction }) {
   function handleAddCart(e) {
     e.preventDefault();
-    const order = {
-      order_product: product._id,
-      order_amount: 1,
-      order_status: 'pending',
-      order_transaction: '',
-      created_at: moment().toISOString()
-    }
-    api.post('/orders', {order}).then(result => {
-      if(result.data.status === 'ok') {
-       // handle message
-       saveOrderAction(order);
+ 
+    const token = localStorage.getItem('token');
+    const decoded = jwt.verify(token, 'kiwi');
+
+    if (decoded) {
+      const order = {
+        order_user: decoded._doc._id,
+        order_product: product,
+        order_amount: 1,
+        order_status: 'pending',
+        order_transaction: '',
+        created_at: moment().toISOString()
       }
-    })
+      api.post('/orders', { order }).then(result => {
+        if (result.data.status === 'ok') {
+          // handle message
+          saveOrderAction(order);
+          // message to notification
+          message.open({
+            type: 'info',
+            content: 'Added to card successfully!',
+            duration: 1,
+          });
+        } else {
+          // message to notification
+          message.open({
+            type: 'warning',
+            content: 'Added to card failed...',
+            duration: 1,
+          });
+        }
+
+      })
+    }
+
   }
   return (
     <div className="product">
-      <NavLink to={`/product/${product._id}`} className="img-prod"><img className="img-fluid" src={`http://localhost:4000/${product.product_images_link[0].url}`} alt={product.product_title} />
+      <NavLink to={`/product/${product._id}`} className="img-prod"><img className="img-fluid" src={`http://localhost:4000/${product.product_images_link[0].image_url}`} alt={product.product_title} />
         <div className="overlay"></div>
       </NavLink>
       <div className="text py-3 pb-4 px-3 text-center">
@@ -56,7 +80,7 @@ function ProductComponent({ product, saveOrderAction }) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return bindActionCreators({
-    saveOrderAction: saveOrder 
+    saveOrderAction: saveOrder
   }, dispatch);
 }
 

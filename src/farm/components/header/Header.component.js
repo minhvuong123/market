@@ -5,10 +5,17 @@ import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import api from 'api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getOrdersCount } from 'app-redux/actions';
+import { getOrdersCount, setToken } from 'app-redux/actions';
 
 
-function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
+function HeaderComponent({ orderCount, orders, getOrdersCountAction, token, setTokenAction }) {
+  const loginUser = (
+    <Menu>
+      <Menu.Item key="0" >
+        <a href="/" className="user-sign-out" style={{ fontSize: 11 }} onClick={handleSignOut}>SIGN OUT</a>
+      </Menu.Item>
+    </Menu>
+  );
 
   useEffect(() => {
     async function fetData() {
@@ -19,13 +26,10 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
     return () => { }
   }, [getOrdersCountAction, orders])
 
-  const loginUser = (
-    <Menu>
-      <Menu.Item key="0" >
-        <a href="/" className="user-sign-out" style={{ fontSize: 11 }} onClick={e => e.preventDefault()}>SIGN OUT</a>
-      </Menu.Item>
-    </Menu>
-  );
+  function handleSignOut(e) {
+    e.preventDefault();
+    setTokenAction('');
+  }
 
   return (
     <React.Fragment>
@@ -38,27 +42,26 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
                 <div className="col-md-2 pr-4 d-flex topper align-items-center">
                   <div className="icon mr-2 d-flex justify-content-center align-items-center"><span className="icon-phone2"></span>
                   </div>
-                  <span className="text">+ 1235 2355 98</span>
+                  <span className="text pt-10 pb-10">+ 1235 2355 98</span>
                 </div>
                 <div className="col-md-3 pr-4 d-flex topper align-items-center">
                   <div className="icon mr-2 d-flex justify-content-center align-items-center"><span
                     className="icon-paper-plane"></span></div>
-                  <span className="text">youremail@email.com</span>
+                  <span className="text pt-10 pb-10">youremail@email.com</span>
                 </div>
                 <div className="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-                  <span className="text">3-5 Business days delivery &amp; Free Returns</span>
+                  <span className="text pt-10 pb-10">3-5 Business days delivery &amp; Free Returns</span>
                 </div>
-                <div className="col-md-2 pr-4 d-flex topper align-items-center text-lg-right">
-                  <div className="">
-                    <NavLink className="ant-dropdown-link color-white pt-10 pb-10 mr-20" to="/sign-up">SIGN IN</NavLink>
-                    <NavLink className="ant-dropdown-link color-white pt-10 pb-10" to="/sign-in">SIGN UP</NavLink>
-                  </div>
+                <div className="col-md-2 pr-4 topper align-items-center text-lg-right">
                   {
-                    true
-                      ? ''
-                      : <Dropdown overlay={loginUser} trigger={['click']}>
-                        <a className="ant-dropdown-link color-white line-height-0" href="/" onClick={e => e.preventDefault()}><UserOutlined /></a>
+                    token
+                      ? <Dropdown overlay={loginUser} trigger={['click']}>
+                        <a className="ant-dropdown-link color-white line-height-0 pt-10 pb-10" href="/" style={{ fontSize: 15 }} onClick={e => e.preventDefault()}><UserOutlined /></a>
                       </Dropdown>
+                      : <div className="">
+                        <NavLink className="ant-dropdown-link color-white pt-10 pb-10 mr-20" to="/sign-up">SIGN UP</NavLink>
+                        <NavLink className="ant-dropdown-link color-white pt-10 pb-10" to="/sign-in">SIGN IN</NavLink>
+                      </div>
                   }
                 </div>
               </div>
@@ -99,16 +102,18 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction }) {
 }
 
 
-function mapStateToProps({ ordersReducer, loadingReducer }, ownProps) {
+function mapStateToProps({ ordersReducer, tokenReducer }) {
   return {
     orderCount: ordersReducer.count,
-    orders: ordersReducer.orders
+    orders: ordersReducer.orders,
+    token: tokenReducer.token
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps( dispatch ) {
   return bindActionCreators({
-    getOrdersCountAction: getOrdersCount
+    getOrdersCountAction: getOrdersCount,
+    setTokenAction: setToken
   }, dispatch);
 }
 

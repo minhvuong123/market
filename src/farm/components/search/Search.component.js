@@ -16,6 +16,8 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
   const [productsCom, setProductsCom] = useState([]);
   const [currentProduct, setCurrentProduct] = useState({ id: 'all', value: 'all' });
   const [productWard, setProductWard] = useState([]);
+  const [currentPagination, setCurrentPagination] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -26,28 +28,23 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
         getCategoriesAction(results[1].data.categories);
         getProductsAction(results[0].data.products);
         setProductsCom(results[0].data.products);
+        setTotalPage(results[0].data.products.length);
       }, 1000);
     }
     fetchData();
   }, [getProductsAction, getCategoriesAction, setLoadingAction]);
 
   async function handleCategory(e, id) {
-    // setLoadingAction(true);
-    // const results = await api.post(`/products/category`, { id, page: 1, limit: 10 });
-    // setTimeout(() => {
-    //   setLoadingAction(false);
-    //   getProductsAction(results.data.products);
-    //   setProductsCom(results.data.products);
-    //   setCurrentProduct({ id, value: e.key });
-    // }, 1000);
     setLoadingAction(true);
     const results = await api.post('/products/filter', { product_category: id, product_ward: productWard });
     setTimeout(() => {
       setLoadingAction(false);
-      if (results.data.products && results.data.products.length) {
+      if ( results.data.products ) {
+        setTotalPage(results.data.products.length);
         setProductsCom(results.data.products);
         getProductsAction(results.data.products);
         setCurrentProduct({ id, value: e.key });
+        setCurrentPagination(1);
       }
     }, 1000);
   }
@@ -62,6 +59,10 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
         setProductWard(values);
       }
     }, 1000);
+  }
+
+  function onChangePagination(page, pageSize) {
+    console.log(page)
   }
 
   return (
@@ -219,7 +220,13 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
                   <span className="pointer line-height-0 bg-white" style={{ padding: '1rem' }}><LeftOutlined /></span>
                   <span className="pointer line-height-0 border-l-1 bg-white" style={{ padding: '1rem' }}><RightOutlined /></span>
                 </div> */}
-                <Pagination simple defaultCurrent={2} total={50} />
+                <Pagination 
+                  simple 
+                  defaultPageSize={20} 
+                  current={currentPagination} 
+                  total={totalPage} 
+                  onChange={onChangePagination} 
+                />
               </div>
             </div>
 

@@ -124,14 +124,14 @@ function HomeComponent({ products, getProductsAction, categories, getCategoriesA
   )
 }
 
-function mapStateToProps({ productsReducer, categoriesReducer }, ownProps) {
+function mapStateToProps({ productsReducer, categoriesReducer }) {
   return {
     products: productsReducer.products,
     categories: categoriesReducer.categories
   }
 }
 
-function mapDispatchToProps(dispatch, ownProps) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getProductsAction: getProducts,
     getCategoriesAction: getCategories,

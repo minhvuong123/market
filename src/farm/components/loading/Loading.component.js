@@ -14,7 +14,7 @@ function LoadingComponent({ loading }) {
 }
 
 
-function mapStateToProps({ ordersReducer, loadingReducer }, ownProps) {
+function mapStateToProps({ loadingReducer }) {
   return {
     loading: loadingReducer.loading
   }

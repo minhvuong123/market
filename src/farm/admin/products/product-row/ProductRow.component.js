@@ -65,7 +65,11 @@ function ProductRowComponent({ product }) {
         <td>{productCom && productCom.product_title}</td>
         <td>
           <div style={{ maxWidth: 100 }}>
-            <img src={`http://localhost:4000/${productCom && productCom.product_images_link[0].image_url}`} alt="" />
+            {
+              productCom
+              && productCom.product_images_link[0]
+              &&  <img src={`http://localhost:4000/${productCom && productCom.product_images_link[0].image_url}`} alt="" />
+            }
           </div>
         </td>
         <td>{productCom && productCom.product_price}</td>
@@ -104,7 +108,7 @@ function ProductRowComponent({ product }) {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item style={{ marginBottom: 0 }} className="form-control-layout">
-            <Form.Item label="Name" name="product_title" rules={[{ required: true, message: 'Proruct name not valid!' }]}  >
+            <Form.Item label="Name" name="product_title" rules={[{ required: true, message: 'Product name not valid!' }]}  >
               <Input />
             </Form.Item>
             <Form.Item label="Price" name="product_price" rules={[{ required: true, message: 'Product price not valid!' }]}  >

@@ -92,7 +92,14 @@ function CategoriesComponent() {
         footer={null}
         width={300}
       >
-        <Form name="product-form" layout='vertical' form={form} initialValues={{ category_title: '' }} onFinish={onFinish} onFinishFailed={onFinishFailed}>
+        <Form 
+          name="product-form" 
+          layout='vertical' 
+          form={form} 
+          initialValues={{ category_title: '' }} 
+          onFinish={onFinish} 
+          onFinishFailed={onFinishFailed}
+        >
           <Form.Item label="Name" name="category_title" rules={[{ required: true, message: 'Category name not valid!' }]}  >
             <Input />
           </Form.Item>
