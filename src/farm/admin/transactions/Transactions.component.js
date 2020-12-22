@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import OrderRowComponent from './order-row/OrderRow.component';
+import TransactionRowComponent from './transaction-row/TransactionRow.component';
 import { Checkbox, Pagination } from 'antd';
 import api from 'api';
 
-function OrdersComponent() {
+function TransactionsComponent() {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  const [orders, setOrders] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    api.get(`/orders/${page}/${10}`).then(results => {
-      setOrders(results.data.orders);
+    api.get(`/transaction/${page}/${10}`).then(results => {
+      setTransactions(results.data.transactions);
       setTotalPage(results.data.count);
     })
     return () => {
@@ -28,22 +28,24 @@ function OrdersComponent() {
         <thead>
           <tr>
             <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
-            <td>Product</td>
-            <td>Price</td>
-            <td>Amount</td>
+            <td>Full name</td>
+            <td>Phone</td>
+            <td>State</td>
+            <td>District</td>
+            <td>Ward</td>
+            <td>Street</td>
             <td>Status</td>
-            <td>Transaction</td>
             <td>Created</td>
             <td>Actions</td>
           </tr>
         </thead>
         <tbody>
           {
-            orders
-              && orders.length
-              ? orders.map(order => <OrderRowComponent key={order._id} order={order}/>)
+            transactions
+              && transactions.length
+              ? transactions.map(order => <TransactionRowComponent key={order._id} transaction={order}/>)
               : <tr>
-                <td colSpan="3" className="text-center">Orders is empty!</td>
+                <td colSpan="3" className="text-center">Transactions is empty!</td>
               </tr>
           }
         </tbody>
@@ -53,4 +55,4 @@ function OrdersComponent() {
   )
 }
 
-export default OrdersComponent;
+export default TransactionsComponent;

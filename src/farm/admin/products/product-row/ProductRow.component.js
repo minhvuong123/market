@@ -12,6 +12,7 @@ function ProductRowComponent({ product }) {
   const [productCom, setProductCom] = useState();
   const [categories, setCategories] = useState();
   const [base64, setBase64] = useState('');
+  const [checkEdit, setCheckEdit] = useState(false)
 
   useEffect(() => {
     api.get(`/categories`).then(result => {
@@ -24,10 +25,12 @@ function ProductRowComponent({ product }) {
   }, [product])
 
   function showModal() {
+    setCheckEdit(true);
     setVisible(true);
   };
 
   function handleCancel() {
+    setCheckEdit(false);
     setVisible(false);
   };
 
@@ -61,7 +64,7 @@ function ProductRowComponent({ product }) {
   return (
     <React.Fragment>
       <tr>
-        <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+        <td className="text-center" style={{ minWidth: 50 }}><Checkbox checked={checkEdit} onChange={showModal} /></td>
         <td>{productCom && productCom.product_title}</td>
         <td>
           <div style={{ maxWidth: 100 }}>
@@ -76,7 +79,7 @@ function ProductRowComponent({ product }) {
         <td>{productCom && productCom.product_amount}</td>
         <td>{productCom && moment(productCom.created_at).format('DD-MM-YYYY hh:mm')}</td>
         <td>
-          <Tag onClick={showModal} color="magenta" style={{ cursor: 'pointer' }}><EllipsisOutlined /></Tag>
+          <Tag color="magenta" style={{ cursor: 'pointer' }}>Delete</Tag>
         </td>
       </tr>
       <Modal

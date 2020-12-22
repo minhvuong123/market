@@ -5,6 +5,7 @@ import api from 'api';
 function CategoryRowComponent({ category, hanelDeleteCategory }) {
   const [categoryCom, setCategoryCom] = useState();
   const [visible, setVisible] = useState(false);
+  const [checkEdit, setCheckEdit] = useState(false)
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -40,19 +41,20 @@ function CategoryRowComponent({ category, hanelDeleteCategory }) {
   };
 
   function handleCancel() {
+    setCheckEdit(false);
     setVisible(false);
   };
 
   function showModal() {
+    setCheckEdit(true);
     setVisible(true);
   };
   return (
     <React.Fragment>
       <tr>
-        <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+        <td className="text-center" style={{ minWidth: 50 }}><Checkbox checked={checkEdit} onChange={showModal} /></td>
         <td>{categoryCom && categoryCom.category_title}</td>
         <td>
-          <Tag onClick={showModal} color="magenta" style={{ cursor: 'pointer' }}>Edit</Tag>
           <Tag onClick={() => deleteCategory(category._id)} color="magenta" style={{ cursor: 'pointer' }}>Delete</Tag>
         </td>
       </tr>

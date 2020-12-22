@@ -8,16 +8,17 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 import { NavLink } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { setLoading } from 'app-redux/actions';
+import { pageTitle } from 'const';
 
 import 'antd/dist/antd.css';
 import UserComponent from './users/Users.component';
 import ProductsComponent from './products/Products.component';
 import CategoriesComponent from './categories/Categories.component';
 import OrdersComponent from './orders/Orders.component';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { setLoading } from 'app-redux/actions';
-import { pageTitle } from 'const';
+import TransactionsComponent from './transactions/Transactions.component';
 
 const { Header, Sider, Content } = Layout;
 
@@ -32,7 +33,7 @@ function AdminComponent({ location, keyPath, setLoadingAction }) {
 
   function indexSubPage(pages, path) {
     let index = -1;
-    pages.map((page, i) => {
+    pages.forEach((page, i) => {
       if (path.indexOf(page) !== -1){
         index = i;
       }
@@ -59,7 +60,7 @@ function AdminComponent({ location, keyPath, setLoadingAction }) {
       case subPages[4]:
         return <OrdersComponent />
       case subPages[5]:
-        return <div>transaction page</div>
+        return <TransactionsComponent />
       default:
         return;
     }

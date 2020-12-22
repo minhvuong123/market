@@ -17,6 +17,7 @@ function UserRowComponent({ user, handleDeleteUser }) {
   const [userCom, setUserCom] = useState();
   const [base64, setBase64] = useState('');
   const [typeImage, setTypeImage] = useState('');
+  const [checkEdit, setCheckEdit] = useState(false)
 
   useEffect(() => {
     setUserCom({ ...user, status: 'done' });
@@ -26,12 +27,14 @@ function UserRowComponent({ user, handleDeleteUser }) {
   }, [user])
 
   function showModal() {
+    setCheckEdit(true);
     setVisible(true);
   };
 
 
   function handleCancel() {
     setVisible(false);
+    setCheckEdit(false);
   };
 
   function onFinish(values) {
@@ -74,7 +77,7 @@ function UserRowComponent({ user, handleDeleteUser }) {
   return (
     <React.Fragment>
       <tr>
-        <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+        <td className="text-center" style={{ minWidth: 50 }}><Checkbox checked={checkEdit} onChange={showModal} /></td>
         <td>{userCom && userCom.user_name}</td>
         <td>
           <div style={{ maxWidth: 100 }}>
@@ -86,7 +89,6 @@ function UserRowComponent({ user, handleDeleteUser }) {
         <td>{userCom && userCom.user_address}</td>
         <td>{userCom && moment(userCom.created_at).format('DD-MM-YYYY hh:mm')}</td>
         <td>
-          <Tag onClick={showModal} color="magenta" style={{ cursor: 'pointer' }}>Edit</Tag>
           <Tag onClick={() => handleDelete(user._id)} color="magenta" style={{ cursor: 'pointer' }}>Delete</Tag>
         </td>
       </tr>

@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Badge, Menu, Dropdown } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import api from 'api';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getOrdersCount, setToken } from 'app-redux/actions';
-
+import jwt from 'jsonwebtoken';
+import api from 'api';
 
 function HeaderComponent({ orderCount, orders, getOrdersCountAction, token, setTokenAction }) {
+  const [decodedToken, getDecodedToken] = useState('');
   const loginUser = (
     <Menu>
       <Menu.Item key="0" >
@@ -21,10 +22,18 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction, token, setT
     async function fetData() {
       const result = await api.get('/orders');
       getOrdersCountAction(result.data.count);
+
+      const tokenLogin = localStorage.getItem('token');
+      jwt.verify(tokenLogin, 'kiwi', function (err, decoded) {
+        if (!err) {
+          getDecodedToken(decoded);
+        }
+      });
     }
     fetData();
+
     return () => { }
-  }, [getOrdersCountAction, orders])
+  }, [token, getOrdersCountAction, orders])
 
   function handleSignOut(e) {
     e.preventDefault();
@@ -84,7 +93,9 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction, token, setT
               <li className="nav-item"><NavLink to="/about" className="nav-link">About</NavLink></li>
               <li className="nav-item"><NavLink to="/blog" className="nav-link">Blog</NavLink></li>
               <li className="nav-item"><NavLink to="/contact" className="nav-link">Contact</NavLink></li>
-              <li className="nav-item"><NavLink to="/admin" className="nav-link">Admin</NavLink></li>
+              {
+                decodedToken ? <li className="nav-item"><NavLink to="/admin" className="nav-link">Admin</NavLink></li> : ''
+              }
               <li className="nav-item cta cta-colored">
                 <NavLink to={`/cards`} className="nav-link">
                   <Badge count={orderCount}>
@@ -110,7 +121,7 @@ function mapStateToProps({ ordersReducer, tokenReducer }) {
   }
 }
 
-function mapDispatchToProps( dispatch ) {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getOrdersCountAction: getOrdersCount,
     setTokenAction: setToken

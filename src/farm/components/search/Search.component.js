@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined, HeartOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Checkbox, Input, Pagination, Rate, Select } from 'antd';
+import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined} from '@ant-design/icons';
+import { Checkbox, Pagination, Select } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getProducts, getCategories, setLoading } from 'app-redux/actions';
@@ -8,7 +8,6 @@ import api from 'api';
 import ProductComponent from '../product/Product.component';
 import { Menu } from 'antd';
 import { country } from 'const';
-import _ from 'lodash';
 
 const { Option } = Select;
 

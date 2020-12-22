@@ -22,39 +22,41 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
       });
     }
     fetData();
-  }, [product_id,  getProductAction, setLoadingAction]);
+  }, [product_id, getProductAction, setLoadingAction]);
 
   function handleAddCart(e) {
     e.preventDefault();
 
     const token = localStorage.getItem('token');
-    const decoded = jwt.verify(token, 'kiwi');
-
-    const order = {
-      order_user: decoded._doc._id,
-      order_product: product,
-      order_amount: 1,
-      order_status: 'pending',
-      order_transaction: '',
-      created_at: moment().toISOString()
-    }
-    api.post('/orders', {order}).then(result => {
-      if(result.data.status === 'ok') {
-        // message to notification
-        message.open({
-          type: 'info',
-          content: 'Added to card successfully!',
-          duration: 1,
-        });
-      } else {
-        // message to notification
-        message.open({
-          type: 'warning',
-          content: 'Added to card failed...',
-          duration: 1,
-        });
+    jwt.verify(token, 'kiwi', function (err, decoded) {
+      if (!err) {
+        const order = {
+          order_user: decoded._doc._id,
+          order_product: product,
+          order_amount: 1,
+          order_status: 'pending',
+          order_transaction: '',
+          created_at: moment().toISOString()
+        }
+        api.post('/orders', { order }).then(result => {
+          if (result.data.status === 'ok') {
+            // message to notification
+            message.open({
+              type: 'info',
+              content: 'Added to card successfully!',
+              duration: 1,
+            });
+          } else {
+            // message to notification
+            message.open({
+              type: 'warning',
+              content: 'Added to card failed...',
+              duration: 1,
+            });
+          }
+        })
       }
-    })
+    });
   }
 
   return product && Object.keys(product).length !== 0 ? (

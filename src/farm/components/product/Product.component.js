@@ -12,41 +12,40 @@ import moment from 'moment';
 function ProductComponent({ product, saveOrderAction }) {
   function handleAddCart(e) {
     e.preventDefault();
- 
+
     const token = localStorage.getItem('token');
-    const decoded = jwt.verify(token, 'kiwi');
-
-    if (decoded) {
-      const order = {
-        order_user: decoded._doc._id,
-        order_product: product,
-        order_amount: 1,
-        order_status: 'pending',
-        order_transaction: '',
-        created_at: moment().toISOString()
-      }
-      api.post('/orders', { order }).then(result => {
-        if (result.data.status === 'ok') {
-          // handle message
-          saveOrderAction(order);
-          // message to notification
-          message.open({
-            type: 'info',
-            content: 'Added to card successfully!',
-            duration: 1,
-          });
-        } else {
-          // message to notification
-          message.open({
-            type: 'warning',
-            content: 'Added to card failed...',
-            duration: 1,
-          });
+    jwt.verify(token, 'kiwi', function (err, decoded) {
+      if (!err) {
+        const order = {
+          order_user: decoded._doc._id,
+          order_product: product,
+          order_amount: 1,
+          order_status: 'pending',
+          order_transaction: '',
+          created_at: moment().toISOString()
         }
+        api.post('/orders', { order }).then(result => {
+          if (result.data.status === 'ok') {
+            // handle message
+            saveOrderAction(order);
+            // message to notification
+            message.open({
+              type: 'info',
+              content: 'Added to card successfully!',
+              duration: 1,
+            });
+          } else {
+            // message to notification
+            message.open({
+              type: 'warning',
+              content: 'Added to card failed...',
+              duration: 1,
+            });
+          }
 
-      })
-    }
-
+        })
+      }
+    });
   }
   return (
     <div className="product">
@@ -54,7 +53,7 @@ function ProductComponent({ product, saveOrderAction }) {
         <div className="overlay"></div>
       </NavLink>
       <div className="text py-3 pb-4 px-3 text-center">
-        <h3><a href="#">{product.product_title}</a></h3>
+        <h3><a href="/">{product.product_title}</a></h3>
         <div className="d-flex">
           <div className="pricing">
             <p className="price"><span>{parseCurrentVND(product.product_price)}</span></p>
@@ -62,13 +61,13 @@ function ProductComponent({ product, saveOrderAction }) {
         </div>
         <div className="bottom-area d-flex px-3">
           <div className="m-auto d-flex">
-            <a href="#" className="add-to-cart d-flex justify-content-center align-items-center text-center">
+            <a href="/" className="add-to-cart d-flex justify-content-center align-items-center text-center">
               <span><i className="ion-ios-menu"></i></span>
             </a>
-            <a onClick={handleAddCart} href="#" className="buy-now d-flex justify-content-center align-items-center mx-1">
+            <a onClick={handleAddCart} href="/" className="buy-now d-flex justify-content-center align-items-center mx-1">
               <span><i className="ion-ios-cart"></i></span>
             </a>
-            <a href="#" className="heart d-flex justify-content-center align-items-center ">
+            <a href="/" className="heart d-flex justify-content-center align-items-center ">
               <span><i className="ion-ios-heart"></i></span>
             </a>
           </div>

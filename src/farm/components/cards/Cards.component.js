@@ -87,34 +87,35 @@ function CardsComponent({ getOrdersAction, setLoadingAction }) {
 
   function onFinish(values) {
     const token = localStorage.getItem('token');
-    const decoded = jwt.verify(token, 'kiwi');
+    jwt.verify(token, 'kiwi', function (err, decoded) {
+      if (!err) {
+        // update status for orders
+        ordersCom.forEach(order => {
+          order.order_status = 'approved'
+        })
 
-   if (decoded){
-    // update status for orders
-    ordersCom.forEach(order => {
-      order.order_status = 'approved'
-    })
+        const results = {
+          transaction_user: decoded._doc._id,
+          transaction_fullname: values.fullname,
+          transaction_phone: values.phone,
+          transaction_state: JSON.parse(values.state).name,
+          transaction_district: JSON.parse(values.district).name,
+          transaction_ward: JSON.parse(values.ward).name,
+          transaction_street: values.street,
+          transaction_orders: ordersCom,
+          created_at: moment().toISOString()
+        }
 
-    const results = {
-      transaction_user: decoded._doc._id,
-      transaction_fullname: values.fullname,
-      transaction_phone: values.phone,
-      transaction_state: JSON.parse(values.state).name,
-      transaction_district: JSON.parse(values.district).name,
-      transaction_ward: JSON.parse(values.ward).name,
-      transaction_street: values.street,
-      transaction_orders: ordersCom,
-      created_at: moment().toISOString()
-    }
-
-    api.post('/transaction', {transaction : results}).then(result => {
-      if (result.data.status === 'ok'){
-        // handle message to success for transaction
-        setVisible(false);
-        form.resetFields();
+        api.post('/transaction', { transaction: results }).then(result => {
+          if (result.data.status === 'ok') {
+            // handle message to success for transaction
+            setVisible(false);
+            form.resetFields();
+          }
+        });
       }
     });
-   }
+
   };
 
   function onFinishFailed(errorInfo) {
@@ -227,7 +228,7 @@ function CardsComponent({ getOrdersAction, setLoadingAction }) {
           </Form.Item>
           <Form.Item name="ward" rules={[{ required: true, message: 'Ward not valid!' }]} >
             <Select placeholder="Phường/Xã">
-            {
+              {
                 wards
                 && wards.map(ward => <Option key={ward.name} value={JSON.stringify(ward)}>{ward.name}</Option>)
               }

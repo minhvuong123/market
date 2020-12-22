@@ -1,2 +1,5 @@
 [1020/221357.443:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
 [1103/101428.717:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1222/145238.942:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\vuong\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\2595ad4b-942e-483f-be3f-8712eb1e3e35: The system cannot find the path specified. (0x3)
+[1222/145240.540:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\vuong\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\8a4c5b64-f832-4464-b18e-397f7f400d9a: The system cannot find the path specified. (0x3)
+[1222/145240.542:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)

@@ -35,11 +35,11 @@ function BlogComponent({ setLoadingAction }) {
                     </a>
                     <div className="text d-block pl-md-4">
                       <div className="meta mb-3">
-                        <div><a href="#">July 20, 2019</a></div>
-                        <div><a href="#">Admin</a></div>
-                        <div><a href="#" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
+                        <div><a href="/">July 20, 2019</a></div>
+                        <div><a href="/">Admin</a></div>
+                        <div><a href="/" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
                       </div>
-                      <h3 className="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                      <h3 className="heading"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                       <p><a href="blog-single.html" className="btn btn-primary py-2 px-3">Read more</a></p>
                     </div>
@@ -51,11 +51,11 @@ function BlogComponent({ setLoadingAction }) {
                     </a>
                     <div className="text d-block pl-md-4">
                       <div className="meta mb-3">
-                        <div><a href="#">July 20, 2019</a></div>
-                        <div><a href="#">Admin</a></div>
-                        <div><a href="#" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
+                        <div><a href="/">July 20, 2019</a></div>
+                        <div><a href="/">Admin</a></div>
+                        <div><a href="/" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
                       </div>
-                      <h3 className="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                      <h3 className="heading"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                       <p><a href="blog-single.html" className="btn btn-primary py-2 px-3">Read more</a></p>
                     </div>
@@ -67,11 +67,11 @@ function BlogComponent({ setLoadingAction }) {
                     </a>
                     <div className="text d-block pl-md-4">
                       <div className="meta mb-3">
-                        <div><a href="#">July 20, 2019</a></div>
-                        <div><a href="#">Admin</a></div>
-                        <div><a href="#" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
+                        <div><a href="/">July 20, 2019</a></div>
+                        <div><a href="/">Admin</a></div>
+                        <div><a href="/" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
                       </div>
-                      <h3 className="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                      <h3 className="heading"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                       <p><a href="blog-single.html" className="btn btn-primary py-2 px-3">Read more</a></p>
                     </div>
@@ -83,11 +83,11 @@ function BlogComponent({ setLoadingAction }) {
                     </a>
                     <div className="text d-block pl-md-4">
                       <div className="meta mb-3">
-                        <div><a href="#">July 20, 2019</a></div>
-                        <div><a href="#">Admin</a></div>
-                        <div><a href="#" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
+                        <div><a href="/">July 20, 2019</a></div>
+                        <div><a href="/">Admin</a></div>
+                        <div><a href="/" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
                       </div>
-                      <h3 className="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                      <h3 className="heading"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                       <p><a href="blog-single.html" className="btn btn-primary py-2 px-3">Read more</a></p>
                     </div>
@@ -99,11 +99,11 @@ function BlogComponent({ setLoadingAction }) {
                     </a>
                     <div className="text d-block pl-md-4">
                       <div className="meta mb-3">
-                        <div><a href="#">July 20, 2019</a></div>
-                        <div><a href="#">Admin</a></div>
-                        <div><a href="#" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
+                        <div><a href="/">July 20, 2019</a></div>
+                        <div><a href="/">Admin</a></div>
+                        <div><a href="/" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
                       </div>
-                      <h3 className="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                      <h3 className="heading"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                       <p><a href="blog-single.html" className="btn btn-primary py-2 px-3">Read more</a></p>
                     </div>
@@ -115,11 +115,11 @@ function BlogComponent({ setLoadingAction }) {
                     </a>
                     <div className="text d-block pl-md-4">
                       <div className="meta mb-3">
-                        <div><a href="#">July 20, 2019</a></div>
-                        <div><a href="#">Admin</a></div>
-                        <div><a href="#" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
+                        <div><a href="/">July 20, 2019</a></div>
+                        <div><a href="/">Admin</a></div>
+                        <div><a href="/" className="meta-chat"><span className="icon-chat"></span> 3</a></div>
                       </div>
-                      <h3 className="heading"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                      <h3 className="heading"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                       <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
                       <p><a href="blog-single.html" className="btn btn-primary py-2 px-3">Read more</a></p>
                     </div>
@@ -139,45 +139,45 @@ function BlogComponent({ setLoadingAction }) {
               <div className="sidebar-box">
                 <h3 className="heading">Categories</h3>
                 <ul className="categories">
-                  <li><a href="#">Vegetables <span>(12)</span></a></li>
-                  <li><a href="#">Fruits <span>(22)</span></a></li>
-                  <li><a href="#">Juice <span>(37)</span></a></li>
-                  <li><a href="#">Dries <span>(42)</span></a></li>
+                  <li><a href="/">Vegetables <span>(12)</span></a></li>
+                  <li><a href="/">Fruits <span>(22)</span></a></li>
+                  <li><a href="/">Juice <span>(37)</span></a></li>
+                  <li><a href="/">Dries <span>(42)</span></a></li>
                 </ul>
               </div>
 
               <div className="sidebar-box">
                 <h3 className="heading">Recent Blog</h3>
                 <div className="block-21 mb-4 d-flex">
-                  <a className="blog-img mr-4" style={{ backgroundImage: 'url(images/image_1.jpg)' }}></a>
+                  <a href="/" className="blog-img mr-4" style={{ backgroundImage: 'url(images/image_1.jpg)' }} >&nbsp;</a>
                   <div className="text">
-                    <h3 className="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    <h3 className="heading-1"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                     <div className="meta">
-                      <div><a href="#"><span className="icon-calendar"></span> April 09, 2019</a></div>
-                      <div><a href="#"><span className="icon-person"></span> Admin</a></div>
-                      <div><a href="#"><span className="icon-chat"></span> 19</a></div>
+                      <div><a href="/"><span className="icon-calendar"></span> April 09, 2019</a></div>
+                      <div><a href="/"><span className="icon-person"></span> Admin</a></div>
+                      <div><a href="/"><span className="icon-chat"></span> 19</a></div>
                     </div>
                   </div>
                 </div>
                 <div className="block-21 mb-4 d-flex">
-                  <a className="blog-img mr-4" style={{ backgroundImage: 'url(images/image_2.jpg)' }}></a>
+                  <a href="/" className="blog-img mr-4" style={{ backgroundImage: 'url(images/image_2.jpg)' }}>&nbsp;</a>
                   <div className="text">
-                    <h3 className="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    <h3 className="heading-1"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                     <div className="meta">
-                      <div><a href="#"><span className="icon-calendar"></span> April 09, 2019</a></div>
-                      <div><a href="#"><span className="icon-person"></span> Admin</a></div>
-                      <div><a href="#"><span className="icon-chat"></span> 19</a></div>
+                      <div><a href="/"><span className="icon-calendar"></span> April 09, 2019</a></div>
+                      <div><a href="/"><span className="icon-person"></span> Admin</a></div>
+                      <div><a href="/"><span className="icon-chat"></span> 19</a></div>
                     </div>
                   </div>
                 </div>
                 <div className="block-21 mb-4 d-flex">
-                  <a className="blog-img mr-4" style={{ backgroundImage: 'url(images/image_3.jpg)' }}></a>
+                  <a href="/" className="blog-img mr-4" style={{ backgroundImage: 'url(images/image_3.jpg)' }}>&nbsp;</a>
                   <div className="text">
-                    <h3 className="heading-1"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                    <h3 className="heading-1"><a href="/">Even the all-powerful Pointing has no control about the blind texts</a></h3>
                     <div className="meta">
-                      <div><a href="#"><span className="icon-calendar"></span> April 09, 2019</a></div>
-                      <div><a href="#"><span className="icon-person"></span> Admin</a></div>
-                      <div><a href="#"><span className="icon-chat"></span> 19</a></div>
+                      <div><a href="/"><span className="icon-calendar"></span> April 09, 2019</a></div>
+                      <div><a href="/"><span className="icon-person"></span> Admin</a></div>
+                      <div><a href="/"><span className="icon-chat"></span> 19</a></div>
                     </div>
                   </div>
                 </div>
@@ -186,14 +186,14 @@ function BlogComponent({ setLoadingAction }) {
               <div className="sidebar-box">
                 <h3 className="heading">Tag Cloud</h3>
                 <div className="tagcloud">
-                  <a href="#" className="tag-cloud-link">fruits</a>
-                  <a href="#" className="tag-cloud-link">tomatoe</a>
-                  <a href="#" className="tag-cloud-link">mango</a>
-                  <a href="#" className="tag-cloud-link">apple</a>
-                  <a href="#" className="tag-cloud-link">carrots</a>
-                  <a href="#" className="tag-cloud-link">orange</a>
-                  <a href="#" className="tag-cloud-link">pepper</a>
-                  <a href="#" className="tag-cloud-link">eggplant</a>
+                  <a href="/" className="tag-cloud-link">fruits</a>
+                  <a href="/" className="tag-cloud-link">tomatoe</a>
+                  <a href="/" className="tag-cloud-link">mango</a>
+                  <a href="/" className="tag-cloud-link">apple</a>
+                  <a href="/" className="tag-cloud-link">carrots</a>
+                  <a href="/" className="tag-cloud-link">orange</a>
+                  <a href="/" className="tag-cloud-link">pepper</a>
+                  <a href="/" className="tag-cloud-link">eggplant</a>
                 </div>
               </div>
 
