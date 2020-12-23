@@ -54,7 +54,7 @@ function CategoryRowComponent({ category, hanelDeleteCategory }) {
       <tr>
         <td className="text-center" style={{ minWidth: 50 }}><Checkbox checked={checkEdit} onChange={showModal} /></td>
         <td>{categoryCom && categoryCom.category_title}</td>
-        <td>
+        <td>\][poiuy]
           <Tag onClick={() => deleteCategory(category._id)} color="magenta" style={{ cursor: 'pointer' }}>Delete</Tag>
         </td>
       </tr>

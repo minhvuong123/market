@@ -1,5 +1,5 @@
 import api from 'api';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getProduct, setLoading } from 'app-redux/actions';
@@ -8,8 +8,9 @@ import { message } from 'antd';
 import moment from 'moment';
 import jwt from 'jsonwebtoken';
 
-function ProductDetailComponent({ match, product, getProductAction, setLoadingAction }) {
+function ProductDetailComponent({ history, match, product, getProductAction, setLoadingAction }) {
   const product_id = match.params.productID;
+  const [amount, setAmount] = useState(1);
 
   useEffect(() => {
     async function fetData() {
@@ -33,7 +34,7 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
         const order = {
           order_user: decoded._doc._id,
           order_product: product,
-          order_amount: 1,
+          order_amount: amount,
           order_status: 'pending',
           order_transaction: '',
           created_at: moment().toISOString()
@@ -55,8 +56,24 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
             });
           }
         })
+      } else {
+        history.push('/sign-in');
       }
     });
+  }
+
+  function handlePlusButton(){
+    setAmount(amount + 1);
+  }
+
+  function handleChangeInput(e){
+    setAmount(+e.target.value);
+  }
+
+  function handleSubButton(){
+    if (amount > 1) {
+      setAmount(amount - 1);
+    }
   }
 
   return product && Object.keys(product).length !== 0 ? (
@@ -118,13 +135,21 @@ function ProductDetailComponent({ match, product, getProductAction, setLoadingAc
                 <div className="w-100"></div>
                 <div className="input-group col-md-6 d-flex mb-3">
                   <span className="input-group-btn mr-2">
-                    <button type="button" className="quantity-left-minus btn" data-type="minus" data-field="">
+                    <button onClick={handleSubButton} type="button" className="quantity-left-minus btn" data-type="minus" data-field="">
                       <i className="ion-ios-remove"></i>
                     </button>
                   </span>
-                  <input type="text" id="quantity" name="quantity" className="form-control input-number" defaultValue="1" min="1" max="100" />
+                  <input 
+                    type="text" 
+                    id="quantity" 
+                    name="quantity" 
+                    className="form-control input-number" 
+                    value={amount}  
+                    min="1" 
+                    max="100" 
+                    onChange={handleChangeInput}/>
                   <span className="input-group-btn ml-2">
-                    <button type="button" className="quantity-right-plus btn" data-type="plus" data-field="">
+                    <button onClick={handlePlusButton} type="button" className="quantity-right-plus btn" data-type="plus" data-field="">
                       <i className="ion-ios-add"></i>
                     </button>
                   </span>

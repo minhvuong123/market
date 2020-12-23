@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined} from '@ant-design/icons';
+import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined, UpCircleOutlined} from '@ant-design/icons';
 import { Checkbox, Pagination, Select } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,7 +7,7 @@ import { getProducts, getCategories, setLoading } from 'app-redux/actions';
 import api from 'api';
 import ProductComponent from '../product/Product.component';
 import { Menu } from 'antd';
-import { country } from 'const';
+import { countries } from 'const';
 
 const { Option } = Select;
 
@@ -17,6 +17,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
   const [productWard, setProductWard] = useState([]);
   const [currentPagination, setCurrentPagination] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
+  const [countriesStatus, setCountriesStatus] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -53,7 +54,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
     const results = await api.post('/products/filter', { product_category: currentProduct.id, product_ward: values });
     setTimeout(() => {
       setLoadingAction(false);
-      if (results.data.products && results.data.products.length) {
+      if (results.data.products) {
         setProductsCom(results.data.products);
         setProductWard(values);
       }
@@ -62,6 +63,11 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
 
   function onChangePagination(page, pageSize) {
     console.log(page)
+  }
+
+  function onChangeStatusCountries(e){
+    e.preventDefault();
+    setCountriesStatus(!countriesStatus);
   }
 
   return (
@@ -97,18 +103,23 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
               <div className="border-b-1" style={{ paddingLeft: 15 }}>
                 <h4>Nơi bán</h4>
                 <div className="catalog-filter-content d-flex flex-column">
-                  <Checkbox.Group  onChange={handleCheckBoxWard}>
+                  <Checkbox.Group className={`${countriesStatus ? 'h-unset' : ''}`} style={{ height: 110, overflow: 'hidden'}} onChange={handleCheckBoxWard}>
                     {
-                      country.map(c => {
-                        return <React.Fragment key={c.country_key}>
+                      countries.map(c => {
+                        return <React.Fragment key={c.id}>
                           <span className="d-block">
-                            <Checkbox value={c.country_key}>{c.country_value}</Checkbox>
+                            <Checkbox value={c.id}>{c.name}</Checkbox>
                           </span>
                         </React.Fragment>
                       })
                     }
                   </Checkbox.Group>
-                  <a href="/" className="d-flex align-center" style={{ marginTop: 5, marginBottom: 5 }}>Thêm <DownCircleOutlined style={{ marginLeft: 5 }} /></a>
+                  <a href="/" onClick={onChangeStatusCountries} className="d-flex align-center" style={{ marginTop: 5, marginBottom: 5 }}>
+                    Thêm 
+                    {
+                      countriesStatus ? <UpCircleOutlined style={{ marginLeft: 5 }} /> : <DownCircleOutlined style={{ marginLeft: 5 }} />
+                    }
+                  </a>
                 </div>
               </div>
 

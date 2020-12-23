@@ -1,6 +1,6 @@
 import api from 'api';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import { parseCurrentVND } from 'utils';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -9,7 +9,8 @@ import { message } from 'antd';
 import jwt from 'jsonwebtoken';
 import moment from 'moment';
 
-function ProductComponent({ product, saveOrderAction }) {
+function ProductComponent({ history, product, saveOrderAction }) {
+
   function handleAddCart(e) {
     e.preventDefault();
 
@@ -44,6 +45,8 @@ function ProductComponent({ product, saveOrderAction }) {
           }
 
         })
+      } else {
+        history.push('/sign-in');
       }
     });
   }
@@ -84,4 +87,4 @@ function mapDispatchToProps(dispatch, ownProps) {
 }
 
 
-export default connect(null, mapDispatchToProps)(ProductComponent);
+export default connect(null, mapDispatchToProps)(withRouter(ProductComponent));

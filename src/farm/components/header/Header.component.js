@@ -37,7 +37,9 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction, token, setT
 
   function handleSignOut(e) {
     e.preventDefault();
-    setTokenAction('');
+    localStorage.setItem('token', '')
+    getDecodedToken('');
+    setTokenAction(''); // token in redux
   }
 
   return (
@@ -63,7 +65,7 @@ function HeaderComponent({ orderCount, orders, getOrdersCountAction, token, setT
                 </div>
                 <div className="col-md-2 pr-4 topper align-items-center text-lg-right">
                   {
-                    token
+                    decodedToken
                       ? <Dropdown overlay={loginUser} trigger={['click']}>
                         <a className="ant-dropdown-link color-white line-height-0 pt-10 pb-10" href="/" style={{ fontSize: 15 }} onClick={e => e.preventDefault()}><UserOutlined /></a>
                       </Dropdown>
