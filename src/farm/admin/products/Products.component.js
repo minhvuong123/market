@@ -1,4 +1,4 @@
-import { Checkbox, Pagination, Tag, Modal, Button, Form, Input, Select } from 'antd';
+import { Pagination, Tag, Modal, Button, Form, Input, Select } from 'antd';
 import api from 'api';
 import { supplier } from 'const';
 import React, { useEffect, useState } from 'react';
@@ -99,7 +99,7 @@ function ProductsComponent() {
       <table className="orders-table" style={{ backgroundColor: '#fff' }}>
         <thead>
           <tr>
-            <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+            <td className="text-center" style={{ minWidth: 50 }}>&nbsp;</td>
             <td>Name</td>
             <td>Image</td>
             <td>Price</td>

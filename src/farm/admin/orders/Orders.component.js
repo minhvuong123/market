@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import OrderRowComponent from './order-row/OrderRow.component';
-import { Checkbox, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import api from 'api';
 
 function OrdersComponent() {
@@ -27,7 +27,7 @@ function OrdersComponent() {
       <table className="orders-table" style={{ backgroundColor: '#fff' }}>
         <thead>
           <tr>
-            <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+            <td className="text-center" style={{ minWidth: 50 }}>&nbsp;</td>
             <td>Product</td>
             <td>Price</td>
             <td>Amount</td>

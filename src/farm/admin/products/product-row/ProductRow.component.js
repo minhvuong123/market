@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { EllipsisOutlined } from '@ant-design/icons';
 import { Checkbox, Tag, Modal, Button, Form, Input, Select } from 'antd';
 import UploadComponent from 'farm/components/upload/Upload.component';
 import api from 'api';

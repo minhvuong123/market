@@ -17,3 +17,35 @@
     }
   }
 }
+
+.catalog-product{
+  .catalog-product-sort{
+    @media screen and (max-width: 1200px) {
+      flex-direction: column;
+      .sort-left{
+        justify-content: center;
+      }
+      .sort-right{
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.best-selling-btn, .search-best-new-btn{
+  background: rgb(251, 85, 51);
+  padding: 5px 20px;
+  color: #fff;
+  cursor: pointer;
+  outline: unset;
+  margin-left: 1rem;
+  white-space: nowrap;
+  border: 0;
+  border: 1px solid #fb5533;
+  &.active{
+    background: #fff;
+    padding: 5px 20px;
+    color: #fb5533;
+    border: 1px solid #fb5533;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import CategoryRowComponent from './category-row/CategoryRow.component';
-import { Checkbox, Pagination, Tag, Modal, Button, Form, Input } from 'antd';
+import { Pagination, Tag, Modal, Button, Form, Input } from 'antd';
 import api from 'api';
 import moment from 'moment';
 
@@ -65,7 +65,7 @@ function CategoriesComponent() {
       <table className="orders-table" style={{ backgroundColor: '#fff' }}>
         <thead>
           <tr>
-            <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+            <td className="text-center" style={{ minWidth: 50 }}>&nbsp;</td>
             <td>Name</td>
             <td>Actions</td>
           </tr>

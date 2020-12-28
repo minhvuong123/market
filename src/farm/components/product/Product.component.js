@@ -52,11 +52,12 @@ function ProductComponent({ history, product, saveOrderAction }) {
   }
   return (
     <div className="product">
-      <NavLink to={`/product/${product._id}`} className="img-prod"><img className="img-fluid" src={`http://localhost:4000/${product.product_images_link[0].image_url}`} alt={product.product_title} />
+      <NavLink to={`/product/${product._id}`} className="img-prod"  title={product.product_title} >
+        <img className="img-fluid" src={`http://localhost:4000/${product.product_images_link[0].image_url}`} alt={product.product_title}/>
         <div className="overlay"></div>
       </NavLink>
       <div className="text py-3 pb-4 px-3 text-center">
-        <h3><a href="/">{product.product_title}</a></h3>
+        <h3><a href="/" className="overflow-text">{product.product_title}</a></h3>
         <div className="d-flex">
           <div className="pricing">
             <p className="price"><span>{parseCurrentVND(product.product_price)}</span></p>

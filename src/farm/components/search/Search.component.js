@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined, UpCircleOutlined} from '@ant-design/icons';
+import { DownCircleOutlined, UnorderedListOutlined, FilterOutlined, UpCircleOutlined } from '@ant-design/icons';
 import { Checkbox, Pagination, Select } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getProducts, getCategories, setLoading } from 'app-redux/actions';
+import { Menu } from 'antd';
+import { countries, searchPrices } from 'const';
 import api from 'api';
 import ProductComponent from '../product/Product.component';
-import { Menu } from 'antd';
-import { countries } from 'const';
 
 const { Option } = Select;
 
 function SearchComponent({ getProductsAction, categories, getCategoriesAction, setLoadingAction }) {
   const [productsCom, setProductsCom] = useState([]);
+  const [countriesStatus, setCountriesStatus] = useState(false);
+  // pagination
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  // search category
   const [currentProduct, setCurrentProduct] = useState({ id: 'all', value: 'all' });
   const [productWard, setProductWard] = useState([]);
-  const [currentPagination, setCurrentPagination] = useState(1);
-  const [totalPage, setTotalPage] = useState(0);
-  const [countriesStatus, setCountriesStatus] = useState(false);
+  const [searchPrice, setSearchPrice] = useState('increase');
+  const [searchBestSelling, setSearchBestSelling] = useState(false);
+  const [searchBestNew, setSearchBestNew] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       setLoadingAction(true);
-      const results = await Promise.all([api.get(`/products/${1}/${50}`), api.get('/categories')]);
+      const results = await Promise.all([api.get(`/products/${1}/${20}`), api.get('/categories')]);
       setTimeout(() => {
         setLoadingAction(false);
         getCategoriesAction(results[1].data.categories);
@@ -36,36 +41,84 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
 
   async function handleCategory(e, id) {
     setLoadingAction(true);
-    const results = await api.post('/products/filter', { product_category: id, product_ward: productWard });
+    const results = await api.post(`/products/filter/${1}/${20}`, { product_category: id, product_ward: productWard, price: searchPrice, search_best_selling: searchBestSelling, search_best_new: searchBestNew });
     setTimeout(() => {
       setLoadingAction(false);
-      if ( results.data.products ) {
+      if (results.data.products) {
         setTotalPage(results.data.products.length);
         setProductsCom(results.data.products);
         getProductsAction(results.data.products);
         setCurrentProduct({ id, value: e.key });
-        setCurrentPagination(1);
+        setPage(1);
       }
     }, 1000);
   }
 
   async function handleCheckBoxWard(values) {
     setLoadingAction(true);
-    const results = await api.post('/products/filter', { product_category: currentProduct.id, product_ward: values });
+    const results = await api.post(`/products/filter/${1}/${20}`, { product_category: currentProduct.id, product_ward: values, price: searchPrice, search_best_selling: searchBestSelling, search_best_new: searchBestNew });
     setTimeout(() => {
       setLoadingAction(false);
       if (results.data.products) {
         setProductsCom(results.data.products);
         setProductWard(values);
+        setPage(1);
       }
     }, 1000);
   }
 
-  function onChangePagination(page, pageSize) {
-    console.log(page)
+  async function handleBestSelling() {
+    setLoadingAction(true);
+    const results = await api.post(`/products/filter/${1}/${20}`, { product_category: currentProduct.id, product_ward: productWard, price: searchPrice, search_best_selling: !searchBestSelling, search_best_new: searchBestNew });
+    setTimeout(() => {
+      setLoadingAction(false);
+      if (results.data.products) {
+        setProductsCom(results.data.products);
+        setSearchBestSelling(!searchBestSelling);
+        setPage(1);
+      }
+    }, 1000);
   }
 
-  function onChangeStatusCountries(e){
+  async function handleBestNew() {
+    setLoadingAction(true);
+    const results = await api.post(`/products/filter/${1}/${20}`, { product_category: currentProduct.id, product_ward: productWard, price: searchPrice, search_best_selling: searchBestSelling, search_best_new: !searchBestNew });
+    setTimeout(() => {
+      setLoadingAction(false);
+      if (results.data.products) {
+        setProductsCom(results.data.products);
+        setSearchBestNew(!searchBestNew);
+        setPage(1);
+      }
+    }, 1000);
+  }
+
+  async function handleSearchPrice(value) {
+    setLoadingAction(true);
+    const results = await api.post(`/products/filter/${1}/${20}`, { product_category: currentProduct.id, product_ward: productWard, string_price: value, search_best_selling: searchBestSelling, search_best_new: searchBestNew });
+    setTimeout(() => {
+      setLoadingAction(false);
+      if (results.data.products) {
+        setProductsCom(results.data.products);
+        setSearchPrice(value);
+        setPage(1);
+      }
+    }, 1000);
+  }
+
+  async function onChangePagination(value) {
+    setLoadingAction(true);
+    const results = await api.post(`/products/filter/${value}/${10}`, { product_category: currentProduct.id, product_ward: productWard, string_price: searchPrice, search_best_selling: searchBestSelling, search_best_new: searchBestNew });
+    setTimeout(() => {
+      setLoadingAction(false);
+      if (results.data.products) {
+        setProductsCom(results.data.products);
+        setPage(value);
+      }
+    }, 1000);
+  }
+
+  function onChangeStatusCountries(e) {
     e.preventDefault();
     setCountriesStatus(!countriesStatus);
   }
@@ -103,7 +156,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
               <div className="border-b-1" style={{ paddingLeft: 15 }}>
                 <h4>Nơi bán</h4>
                 <div className="catalog-filter-content d-flex flex-column">
-                  <Checkbox.Group className={`${countriesStatus ? 'h-unset' : ''}`} style={{ height: 110, overflow: 'hidden'}} onChange={handleCheckBoxWard}>
+                  <Checkbox.Group className={`${countriesStatus ? 'h-unset' : ''}`} style={{ height: 110, overflow: 'hidden' }} onChange={handleCheckBoxWard}>
                     {
                       countries.map(c => {
                         return <React.Fragment key={c.id}>
@@ -115,7 +168,7 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
                     }
                   </Checkbox.Group>
                   <a href="/" onClick={onChangeStatusCountries} className="d-flex align-center" style={{ marginTop: 5, marginBottom: 5 }}>
-                    Thêm 
+                    Thêm
                     {
                       countriesStatus ? <UpCircleOutlined style={{ marginLeft: 5 }} /> : <DownCircleOutlined style={{ marginLeft: 5 }} />
                     }
@@ -214,28 +267,43 @@ function SearchComponent({ getProductsAction, categories, getCategoriesAction, s
           </div>
           <div className="catalog-product flex-grow pl-10 pr-10">
             <div className="catalog-product-sort d-flex justify-between" style={{ backgroundColor: 'rgba(0,0,0,.03)', padding: '20px' }}>
-              <div className="d-flex align-center flex-grow">
+              <div className="sort-left d-flex align-center justify-center flex-grow">
                 <span className="space-nowrap">Sắp xếp theo</span>
-                <button type="button" className="primary border-0 outline-0 pointer color-white space-nowrap ml-10" style={{ background: '#fb5533', padding: '5px 20px' }}>Phổ biến</button>
-                <button type="button" className="primary border-0 outline-0 pointer color-white space-nowrap ml-10" style={{ background: '#fb5533', padding: '5px 20px' }}>Mới nhất</button>
-                <button type="button" className="primary border-0 outline-0 pointer color-white space-nowrap ml-10" style={{ background: '#fb5533', padding: '5px 20px' }}>Bán chạy</button>
-                <Select className="ml-10" defaultValue="Giá" style={{ width: 200 }}>
-                  <Option value="increase">Giá: thấp đến cao</Option>
-                  <Option value="decrease">Giá: cao đến thấp</Option>
+                <button
+                  type="button"
+                  className="primary border-0 outline-0 pointer color-white space-nowrap ml-10"
+                  style={{ background: '#fb5533', padding: '5px 20px' }}>
+                  Phổ biến
+                </button>
+                <button
+                  onClick={handleBestNew}
+                  type="button"
+                  className={`search-best-new-btn ${searchBestNew ? 'active' : ''}`} >
+                  Mới nhất
+                  </button>
+                <button
+                  onClick={handleBestSelling}
+                  type="button"
+                  className={`best-selling-btn ${searchBestSelling ? 'active' : ''}`} >
+                  Bán chạy
+                  </button>
+                <Select onChange={handleSearchPrice} className="ml-10" defaultValue="Giá" style={{ width: 200 }}>
+                  {
+                    searchPrices.map(p => <Option key={p.id} value={p.id}>{p.value}</Option>)
+                  }
                 </Select>
               </div>
-              <div className="d-flex align-center">
+              <div className="sort-right d-flex align-center justify-center">
                 {/* <span>1/100</span>
                 <div className="product-arrow d-flex align-center ml-10">
                   <span className="pointer line-height-0 bg-white" style={{ padding: '1rem' }}><LeftOutlined /></span>
                   <span className="pointer line-height-0 border-l-1 bg-white" style={{ padding: '1rem' }}><RightOutlined /></span>
                 </div> */}
-                <Pagination 
-                  simple 
-                  defaultPageSize={20} 
-                  current={currentPagination} 
-                  total={totalPage} 
-                  onChange={onChangePagination} 
+                <Pagination
+                  simple
+                  current={page}
+                  total={totalPage}
+                  onChange={onChangePagination}
                 />
               </div>
             </div>

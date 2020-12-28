@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox, Pagination, Tag, Modal, Button, Form, Input, Select } from 'antd';
+import { Pagination, Tag, Modal, Button, Form, Input, Select } from 'antd';
 import api from 'api';
 import UserRowComponent from './user-row/UserRow.component';
 import UploadComponent from 'farm/components/upload/Upload.component';
@@ -98,7 +98,7 @@ function UsersComponent() {
         <table className="orders-table" style={{ backgroundColor: '#fff' }}>
           <thead>
             <tr>
-              <td className="text-center" style={{ minWidth: 50 }}><Checkbox /></td>
+              <td className="text-center" style={{ minWidth: 50 }}>&nbsp;</td>
               <td>Name</td>
               <td>Avatar</td>
               <td>Email</td>

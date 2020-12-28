@@ -33,28 +33,13 @@ export const order_status = [
         order_value: "Pending"
     },
     {
-        order_key: "done",
-        order_value: "Done"
+        order_key: "approved",
+        order_value: "Approved"
     },
     {
         order_key: "cancel",
         order_value: "Cancel"
     }
-];
-
-export const country = [
-  {
-    country_key: 'TP.HCM',
-    country_value: 'TP.Hồ Chí Minh'
-  },
-  {
-    country_key: 'HN',
-    country_value: 'Hà Nội'
-  },
-  {
-    country_key: 'BT',
-    country_value: 'Bình Thuận'
-  }
 ];
 
 export const pageTitle = {
@@ -65,3 +50,14 @@ export const pageTitle = {
   "admin/orders": 'Orders Manager',
   "admin/transaction": 'Transaction Manager',
 }
+
+export const searchPrices = [
+  {
+    id: 'asc',
+    value: 'Giá: tăng dần'
+  },
+  {
+    id: 'desc',
+    value: 'Giá: giảm dần'
+  }
+]
